@@ -1,18 +1,10 @@
 # src/cli.py
 import argparse
 import sys
-import os
 
-# 1. Force Python to see the root directory when executed as a standalone script
-CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
-ROOT_DIR = os.path.abspath(os.path.join(CURRENT_DIR, ".."))
-if ROOT_DIR not in sys.path:
-    sys.path.insert(0, ROOT_DIR)
-
-# 2. Absolute package imports
-from src.repository.lead_repository import LeadRepository
-from src.models.lead import Lead, LeadStage
-from src.models.errors import LeadNotFoundError, DuplicatePhoneError
+from repository.lead_repository import LeadRepository
+from models.lead import Lead, LeadStage
+from models.errors import LeadNotFoundError, DuplicatePhoneError
 
 def main():
     parser = argparse.ArgumentParser(
