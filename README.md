@@ -28,9 +28,6 @@ academyops-project/
 ├── data/                           # Local database storage directory (Git ignored)
 │   └── academyops.db               # Live SQLite system of record file
 │
-├── scripts/                        # Database background automation tools
-│   └── init_db.py                  # Absolute-path table orchestration script
-│
 ├── src/                            # Central core application package
 │   ├── __init__.py                 # Package initialization mapping
 │   ├── cli.py                      # User-facing command line interface console
@@ -54,6 +51,7 @@ academyops-project/
 │       ├── __init__.py
 │       └── logger.py               # Unified streaming file & console logger
 │
+├── init_db.py                  # Absolute-path table orchestration script
 ├── .gitignore                      # Excludes local caches, logs, and databases
 ├── academyops.log                  # Centralized file-based application logs
 ├── README.md                       # Comprehensive onboarding & operations guide
