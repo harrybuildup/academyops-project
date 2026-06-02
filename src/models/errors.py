@@ -2,7 +2,7 @@ class LeadError(Exception):
     pass
 
 
-class LeadNotFound(LeadError):
+class LeadNotFoundError(LeadError):
     pass
 
 
