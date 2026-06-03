@@ -1,41 +1,88 @@
-# WP-02: Data Ingestion & Cleansing Pipeline
+# WP-03: Lead Management REST API (Flask)
 
-## What It Does
-Loads messy CSV lead data, validates & cleans it, and imports only good records into the database. Bad rows get quarantined with reasons.
+REST API for lead management built with Flask. Depends on WP-01 (Lead Repository).
 
-## Usage
+## Setup
 
 ```bash
-python -m src.repository.lead_importer \
-  --input data/messy_leads.csv \
-  --db academyops.db \
-  --quarantine data/quarantine.csv
+source venv/bin/activate
+pip install -r requirements.txt
+python src/api.py
 ```
 
-## Features
+API runs on `http://localhost:5000/api/v1`
 
-✅ **Cleaning** — Normalizes phone numbers, source names, whitespace  
-✅ **Validation** — Requires name & phone, validates phone format (7-15 digits)  
-✅ **De-duplication** — Checks within batch AND against database  
-✅ **Safe Loading** — Uses transactions, parameterized queries via WP-01 repo  
-✅ **Quarantine** — Rejects go to separate CSV with rejection reasons  
-✅ **Reconciliation** — Prints summary report (total = imported + skipped + deduplicated)  
+## Endpoints
 
-## Files
+| Method | Endpoint | Purpose |
+|--------|----------|---------|
+| GET | `/leads` | List leads (filters: `stage`, `source`; pagination: `page`, `limit`) |
+| GET | `/leads/{id}` | Get a lead |
+| POST | `/leads` | Create lead (required: `name`, `phone`) |
+| PATCH | `/leads/{id}/stage` | Update stage |
+| DELETE | `/leads/{id}` | Delete lead |
 
-- `src/utils/cleansing.py` — Normalization functions
-- `src/repository/lead_importer.py` — Main importer logic
-- `data/messy_leads.csv` — Test data with intentional defects
+## Quick Examples
+
+**List leads:**
+```bash
+curl "http://localhost:5000/api/v1/leads?stage=New&page=1&limit=10"
+```
+
+**Create lead:**
+```bash
+curl -X POST http://localhost:5000/api/v1/leads \
+  -H "Content-Type: application/json" \
+  -d '{"name": "John Doe", "phone": "+1-555-0100", "source": "google_ads"}'
+```
+
+**Update stage:**
+```bash
+curl -X PATCH http://localhost:5000/api/v1/leads/1/stage \
+  -H "Content-Type: application/json" \
+  -d '{"stage": "Contacted"}'
+```
+
+## Status Codes
+
+- **200** — OK
+- **201** — Created
+- **204** — Deleted
+- **400** — Bad request (validation error)
+- **404** — Not found
+
+## Error Response
+
+```json
+{
+  "error": "Human-readable message",
+  "details": "Optional context"
+}
+```
 
 ## Testing
 
-Run importer on test data:
 ```bash
-python -m src.repository.lead_importer --input data/messy_leads.csv
+pytest tests/test_api.py -v
 ```
 
-Verify results:
+## Troubleshooting
+
+**Port 5000 in use?**
 ```bash
-sqlite3 academyops.db "SELECT COUNT(*) FROM leads;"
-wc -l data/quarantine.csv
+python src/api.py --port 8080
 ```
+
+**Database not found?**
+```bash
+python src/cli.py list  # Initialize from WP-01
+```
+
+**422 error?**
+Check JSON body—missing required fields (`name`, `phone`).
+
+## Valid Pipeline Stages
+
+`New` → `Contacted` → `Qualified` → `Demo` → `Enrolled` / `Lost`
+
+---
