@@ -49,6 +49,45 @@ class LeadRepository:
                 raise LeadNotFoundError(f"Lead with ID {lead_id} not found.")
         finally:
             close_connection(conn)
+    
+    def get_leads_advanced(self, stage=None, source=None, page=1, limit=10):
+        """Fetches a filtered and paginated list of leads, plus the total count."""
+        
+        conn = create_connection(self.db_file)
+        try:
+            cursor = conn.cursor()
+            
+            # Base query
+            query = "SELECT * FROM leads WHERE 1=1"
+            params = []
+            
+            # Dynamically add filters if they were requested
+            if stage:
+                query += " AND stage = ?"
+                params.append(stage)
+            if source:
+                query += " AND source = ?"
+                params.append(source)
+                
+            # First, get the total count for our API metadata BEFORE we limit the results
+            count_query = query.replace("SELECT *", "SELECT COUNT(*)")
+            cursor.execute(count_query, params)
+            total_count = cursor.fetchone()[0]
+            
+            # Now add the pagination limits
+            offset = (page - 1) * limit
+            query += " LIMIT ? OFFSET ?"
+            params.extend([limit, offset])
+            
+            cursor.execute(query, params)
+            rows = cursor.fetchall()
+            
+            # Convert rows back into Lead objects
+            leads = [Lead(*row) for row in rows]
+            
+            return leads, total_count
+        finally:
+            close_connection(conn)
 
     def update_lead(self, lead: Lead):
         conn = create_connection(self.db_file)
