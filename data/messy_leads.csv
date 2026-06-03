@@ -1,0 +1,216 @@
+name,phone,source,notes
+Eleanor Vance,+15551001,LinkedIn,Interested in the full-stack web development track.
+Siddharth Nair,+15551002,Google,Downloaded the data science course syllabus PDF.
+Elena Rostova,+15551003,LinkedIn,Requested details on part-time evening schedules.
+Alex Mercer,+15551004,Google,Wants to know if there are scholarships for Data Engineering.
+Marcus Vance,+15551005,LinkedIn,Colleague of an alumni student. Thinks it looks promising.
+Chloe Tanaka,+15551006,Google,Hoping to transition from marketing into UX/UI or front-end.
+Omar Farooq,+15551007,LinkedIn,Working professional looking for weekend bootcamp tracks.
+Amara Okafor,+15551008,Google,Wants to clarify if JavaScript or Python is taught first.
+Liam Gallagher,+15551009,LinkedIn,Self-taught dev looking for a formal certification.
+Sofia Martinez,+15551010,Google,Inquired via ad link about the career placement metrics.
+Devon Brooks,+15551011,LinkedIn,Wants info on the Python for Data Analytics module.
+Yuki Sato,+15551012,Google,wants to enroll if there is a hybrid option available.
+Zoe Dubois,+15551013,LinkedIn,Needs an intermediate curriculum on database design.
+Lucas Ferreira,+15551014,Google,curious about the capstone project scope.
+Aisha Rahman,+15551015,LinkedIn,Requested a callback from an admissions counselor.
+Mateo Rossi,+15551016,Google,Wants to check financing options and monthly payment plans.
+Nina Williams,+15551017,LinkedIn,Wants to upgrade from QA testing to data engineering.
+Kenji Tanaka,+15551018,Google,wants to review the react components syllabus.
+Fatima Al-Sayed,+15551019,LinkedIn,Is Python mandatory for the analytics elective?
+Hans Mueller,+15551020,Google,Looking for high-density curriculum in software engineering.
+Priya Sharma,+15551021,LinkedIn,Wants evening classes due to day-shift corporate job.
+Jean-Pierre Dupont,+15551022,Google,Requested a deep dive syllabus for the backend API block.
+Sarah Jenkins,+15551023,LinkedIn,wants to know if local internships are arranged.
+Carlos Mendez,+15551024,Google,Needs foundational math prep before launching into statistics.
+Lin Wei,+15551025,LinkedIn,Wants concrete training on PostgreSQL database optimization.
+Freja Nielsen,+15551026,Google,looking to switch paths from graphic design.
+Gabriel Silva,+15551027,LinkedIn,interested in cloud architecture integrations.
+Zara Khan,+15551028,Google,Wants clear instructions on remote enrollment processes.
+David Kowalski,+15551029,LinkedIn,Wants to understand if docker containers are covered.
+Amina Diallo,+15551030,Google,Looking to build a professional github portfolio.
+James Henderson,+15551031,LinkedIn,Interested in software design patterns.
+Isabella Rossi,+15551032,Google,wants to know the weekly time commitment.
+Tariq Mahmood,+15551033,LinkedIn,Transitioning from mechanical engineering to software.
+Elena Petrova,+15551034,Google,Needs help deciding between data analysis and web dev.
+Oliver Bennett,+15551035,LinkedIn,Alumni recommendation. Very highly motivated.
+Mei-Ling Rosenberg,+15551036,Google,wants to see past student project examples.
+Arjun Mehta,+15551037,LinkedIn,wants to know about algorithmic complexity training.
+Carmen Ortiz,+15551038,Google,Requested bilingual material if available.
+Kofi Mensah,+15551039,LinkedIn,wants to specialize in cloud infrastructure patterns.
+Astrid Lindqvist,+15551040,Google,Wants clear tracking on mentorship availability.
+Ryan O'Connor,+15551041,LinkedIn,Experienced IT desktop support moving into scripting.
+Nisha Patel,+15551042,Google,Inquiry regarding Flask framework compared to FastAPI.
+Diego Alvarez,+15551043,LinkedIn,Wants explicit confirmation on job guarantee clauses.
+Simona Halep,+15551044,Google,wants to learn pandas and numpy deeply.
+Arthur Pendelton,+15551045,LinkedIn,Retiring military member transitioning to cybersecurity/code.
+Theresa May,+15551046,Google,Wants clean timeline metrics on graduation schedules.
+William Wright,+15551047,LinkedIn,wants clear tracking on software testing modules.
+Rachel Green,+15551048,Google,wants to build interactive dashboard applications.
+Monica Geller,+15551049,LinkedIn,looking for structural programming discipline.
+Chandler Bing,+15551050,Google,wants to know if computing data models is heavily mathematical.
+   Thomas Miller   ,  (555) 200-51  ,FACEBOOK,Inquired from mobile ad unit.
+   Robert Taylor   ,  (555) 200-52  ,  linked-in  ,Needs curriculum emailed.
+   Jessica Davies   ,  (555) 200-53  ,WebSite ,Left a callback message.
+   Daniel White   ,  (555) 200-54  ,  goog  ,Wants details on financial aid.
+   Michael Clark   ,  (555) 200-55  ,FACEBOOK,Looking for full-time schedule.
+   James Rodriguez   ,  (555) 200-56  ,  linked-in  ,Interested in backend track.
+   Emily Watson   ,  (555) 200-57  ,WebSite ,Needs remote learning options.
+   William Harris   ,  (555) 200-58  ,  goog  ,Wants to start next month.
+   Sophie Turner   ,  (555) 200-59  ,FACEBOOK,Requested syllabus via text.
+   Oliver Green   ,  (555) 200-60  ,  linked-in  ,Alumni referral lead.
+   Charlotte King   ,  (555) 200-61  ,WebSite ,Curious about placement rates.
+   Benjamin Baker   ,  (555) 200-62  ,  goog  ,Left voicemail on main line.
+   Amelia Carter   ,  (555) 200-63  ,FACEBOOK,Wants evening sessions only.
+   Lucas Wright   ,  (555) 200-64  ,  linked-in  ,Working professional profile.
+   Mia Thornton   ,  (555) 200-65  ,WebSite ,Inquiry on database modules.
+   Henry Campbell   ,  (555) 200-66  ,  goog  ,Wants trial class link.
+   Harper Mitchell   ,  (555) 200-67  ,FACEBOOK,Re-engaged from old form.
+   Evelyn Adams   ,  (555) 200-68  ,  linked-in  ,Wants to update tech stack.
+   Jack Phillips   ,  (555) 200-69  ,WebSite ,Needs Python basics prep.
+   Aria Campbell   ,  (555) 200-70  ,  goog  ,Requested discount options.
+   Samuel Evans   ,  (555) 200-71  ,FACEBOOK,Wants to learn data modeling.
+   Grace Parker   ,  (555) 200-72  ,  linked-in  ,Transitioning from QA role.
+   Daniel Edwards   ,  (555) 200-73  ,WebSite ,Sent from organic search.
+   Lily Collins   ,  (555) 200-74  ,  goog  ,Wants portfolio review info.
+   David Stewart   ,  (555) 200-75  ,FACEBOOK,Looking at UI extension tracks.
+   Matthew Morris   ,  (555) 200-76  ,  linked-in  ,Wants JavaScript deep dive.
+   Hannah Nguyen   ,  (555) 200-77  ,WebSite ,Needs weekend schedule details.
+   Andrew Rivera   ,  (555) 200-78  ,  goog  ,Inquired from career page.
+   Natalie Cook   ,  (555) 200-79  ,FACEBOOK,Wants job guarantee details.
+   Joseph Rogers   ,  (555) 200-80  ,  linked-in  ,Experienced corporate lead.
+   Elizabeth Morgan   ,  (555) 200-81  ,WebSite ,Needs certificate timeline.
+   Christopher Bell   ,  (555) 200-82  ,  goog  ,Wants mentor availability info.
+   Victoria Cooper   ,  (555) 200-83  ,FACEBOOK,Wants sample project links.
+   Kevin Peterson   ,  (555) 200-84  ,  linked-in  ,Wants course pricing sheet.
+   Lauren Bailey   ,  (555) 200-85  ,WebSite ,Needs hybrid path details.
+   Ryan Reed   ,  (555) 200-86  ,  goog  ,Self-taught programmer lead.
+   Megan Kelly   ,  (555) 200-87  ,FACEBOOK,Wants enrollment deadlines.
+   Nathan Cox   ,  (555) 200-88  ,  linked-in  ,Requested call at 5 PM.
+   Rachel Howard   ,  (555) 200-89  ,WebSite ,Wants analytics tracks.
+   Christian Ward   ,  (555) 200-90  ,  goog  ,Looking for frontend modules.
+   Emma Brooks   ,  (555) 200-91  ,FACEBOOK,Transitioning from sales.
+   Justin Gray   ,  (555) 200-92  ,  linked-in  ,Inquired via direct message.
+   Amanda Price   ,  (555) 200-93  ,WebSite ,Wants career counselor call.
+   Brandon James   ,  (555) 200-94  ,  goog  ,Downloaded system brochure.
+   Nicole Bennett   ,  (555) 200-95  ,FACEBOOK,Wants financing criteria.
+   Robert Wood   ,  (555) 200-96  ,  linked-in  ,Wants cloud native course.
+   Rebecca Watson   ,  (555) 200-97  ,WebSite ,Needs syllabus translation.
+   Jonathan Ross   ,  (555) 200-98  ,  goog  ,Wants interview prep details.
+   Melissa Perry   ,  (555) 200-99  ,FACEBOOK,Inquired from Instagram link.
+   Aaron Jenkins   ,  (555) 200-100  ,  linked-in  ,Looking for data pipelines.
+Jonathan Vance,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Nicholas Cooper,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Christine Palmer,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Alexander Nielson,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Sonia Henderson,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Douglas Lawson,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Katherine Webb,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Patrick Reynolds,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Teresa Bradley,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Albert Freeman,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Diana Weaver,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Philip Snyder,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Wayne Sanders,,Google,No phone present. Critical break case.
+,,Facebook,Missing name profile completely. Reject track.
+,,Referral,Completely empty row metrics parsing error.
+Louis Hansen,,Google,No phone present. Critical break case.
+Arthur Morrison,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Jane Montgomery,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Harold Coleman,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Julia Andrews,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Walter Gibson,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Frances Fox,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Dennis Perkins,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Martha Reyes,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Peter Boyd,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Sara Jordan,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Henry Owens,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Ruth Long,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Carl Jenkins,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Lori Howell,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Martin Myers,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Virginia Porter,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Roy Sullivan,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Alice Wallace,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Eugene Kennedy,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Janice Fischer,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Billy Reynolds,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Doris Hamilton,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Lawrence Garrett,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Marilyn Price,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Paul Johnston,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Beverly Ruiz,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Bryan Alexander,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Tiffany Bishop,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Alan Delaney,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Rachel Thorne,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Gregory Vance,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Megan Sterling,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Marcus Flint,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Fiona Gallagher,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Ian Curtis,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.
+Sarah Connor,+1555999901,Google,First instance in batch.
+Sarah Connor Duplicate Copy,+1555999901,goog,Intra-batch duplicate record!
+John Connor,+1555999902,Google,First instance in batch.
+John Connor Duplicate Copy,+1555999902,goog,Intra-batch duplicate record!
+Miles Dyson,+1555999903,Google,First instance in batch.
+Miles Dyson Duplicate Copy,+1555999903,goog,Intra-batch duplicate record!
+Marcus Wright,+1555999904,Google,First instance in batch.
+Marcus Wright Duplicate Copy,+1555999904,goog,Intra-batch duplicate record!
+Kyle Reese,+1555999905,Google,First instance in batch.
+Kyle Reese Duplicate Copy,+1555999905,goog,Intra-batch duplicate record!
+Peter Silberman,+1555999906,Google,First instance in batch.
+Peter Silberman Duplicate Copy,+1555999906,goog,Intra-batch duplicate record!
+Katherine Brewster,+1555999907,Google,First instance in batch.
+Katherine Brewster Duplicate Copy,+1555999907,goog,Intra-batch duplicate record!
+Grace Harper,+1555999908,Google,First instance in batch.
+Grace Harper Duplicate Copy,+1555999908,goog,Intra-batch duplicate record!
+Dani Ramos,+1555999909,Google,First instance in batch.
+Dani Ramos Duplicate Copy,+1555999909,goog,Intra-batch duplicate record!
+Diego Ramos,+15559999010,Google,First instance in batch.
+Diego Ramos Duplicate Copy,+15559999010,goog,Intra-batch duplicate record!
+Database Double Challenger Eleanor,+15551001,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Siddharth,+15551002,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Elena,+15551003,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Alex,+15551004,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Marcus,+15551005,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Chloe,+15551006,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Omar,+15551007,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Amara,+15551008,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Liam,+15551009,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Sofia,+15551010,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Devon,+15551011,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Yuki,+15551012,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Zoe,+15551013,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Lucas,+15551014,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Aisha,+15551015,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Mateo,+15551016,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Nina,+15551017,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Kenji,+15551018,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Fatima,+15551019,Facebook,Testing cross-check validation against existing system rows.
+Database Double Challenger Hans,+15551020,Facebook,Testing cross-check validation against existing system rows.

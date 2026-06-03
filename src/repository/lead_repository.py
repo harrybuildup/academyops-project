@@ -1,9 +1,9 @@
-from database.connections import create_connection, close_connection
+from src.database.connections import create_connection, close_connection
 import sqlite3
 from datetime import datetime
-from models.lead import Lead
-from models.errors import LeadNotFoundError, DuplicatePhoneError
-from utils.logger import logger
+from src.models.lead import Lead
+from src.models.errors import LeadNotFoundError, DuplicatePhoneError
+from src.utils.logger import logger
 
 class LeadRepository:
     def __init__(self, db_file):

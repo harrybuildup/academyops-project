@@ -1,0 +1,106 @@
+name,phone,source,notes,rejection_reason
+Jonathan Vance,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Nicholas Cooper,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Christine Palmer,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Alexander Nielson,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Sonia Henderson,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Douglas Lawson,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Katherine Webb,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Patrick Reynolds,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Teresa Bradley,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Albert Freeman,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Diana Weaver,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Philip Snyder,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Wayne Sanders,,Google,No phone present. Critical break case.,Missing required field: phone number
+,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
+,,Referral,Completely empty row metrics parsing error.,Missing required field: name
+Louis Hansen,,Google,No phone present. Critical break case.,Missing required field: phone number
+Arthur Morrison,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
+Jane Montgomery,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
+Harold Coleman,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
+Julia Andrews,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '+1-INVALID-NUM'
+Walter Gibson,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
+Frances Fox,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
+Dennis Perkins,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
+Martha Reyes,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '+1-INVALID-NUM'
+Peter Boyd,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
+Sara Jordan,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
+Henry Owens,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
+Ruth Long,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '+1-INVALID-NUM'
+Carl Jenkins,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
+Lori Howell,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
+Martin Myers,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
+Virginia Porter,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '+1-INVALID-NUM'
+Roy Sullivan,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
+Alice Wallace,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
+Eugene Kennedy,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
+Janice Fischer,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '+1-INVALID-NUM'
+Billy Reynolds,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
+Doris Hamilton,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
+Lawrence Garrett,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
+Marilyn Price,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '+1-INVALID-NUM'
+Paul Johnston,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
+Beverly Ruiz,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
+Bryan Alexander,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
+Tiffany Bishop,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '+1-INVALID-NUM'
+Alan Delaney,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
+Rachel Thorne,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
+Gregory Vance,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
+Megan Sterling,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '+1-INVALID-NUM'
+Marcus Flint,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
+Fiona Gallagher,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
+Ian Curtis,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
+Sarah Connor Duplicate Copy,+1555999901,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+John Connor Duplicate Copy,+1555999902,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+Miles Dyson Duplicate Copy,+1555999903,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+Marcus Wright Duplicate Copy,+1555999904,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+Kyle Reese Duplicate Copy,+1555999905,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+Peter Silberman Duplicate Copy,+1555999906,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+Katherine Brewster Duplicate Copy,+1555999907,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+Grace Harper Duplicate Copy,+1555999908,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+Dani Ramos Duplicate Copy,+1555999909,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+Diego Ramos Duplicate Copy,+15559999010,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
+Database Double Challenger Eleanor,+15551001,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Siddharth,+15551002,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Elena,+15551003,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Alex,+15551004,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Marcus,+15551005,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Chloe,+15551006,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Omar,+15551007,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Amara,+15551008,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Liam,+15551009,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Sofia,+15551010,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Devon,+15551011,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Yuki,+15551012,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Zoe,+15551013,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Lucas,+15551014,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Aisha,+15551015,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Mateo,+15551016,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Nina,+15551017,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Kenji,+15551018,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Fatima,+15551019,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Database Double Challenger Hans,+15551020,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
