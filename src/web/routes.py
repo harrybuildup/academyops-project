@@ -1,5 +1,6 @@
 from flask import Blueprint, current_app, jsonify, request
 from src.models.lead import Lead
+from src.web.validators import validate_lead_payload, validate_stage_update
 
 # Establish the v1 API Blueprint container
 api_blueprint = Blueprint('api_v1', __name__, url_prefix='/api/v1')
@@ -49,8 +50,9 @@ def create_lead():
     data = request.get_json()
     
     # Validation: Ensure payload exists and required fields are present
-    if not data or 'name' not in data or 'phone' not in data:
-        return jsonify({"error": "Missing required fields: name and phone"}), 400
+    is_valid, error_msg = validate_lead_payload(data)
+    if not is_valid:
+        return jsonify({"error": error_msg}), 400
         
     repo = current_app.config['REPOSITORY']
     
@@ -73,8 +75,9 @@ def create_lead():
 def update_stage(lead_id):
     data = request.get_json()
     
-    if not data or 'stage' not in data:
-        return jsonify({"error": "Missing required field: stage"}), 400
+    is_valid, error_msg = validate_stage_update(data)
+    if not is_valid:
+        return jsonify({"error": error_msg}), 400
         
     repo = current_app.config['REPOSITORY']
     

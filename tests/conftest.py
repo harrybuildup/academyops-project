@@ -21,7 +21,7 @@ def repo(isolated_db):
 @pytest.fixture()
 def client(repo):
     """Provides a Flask test client with the app configured to use the isolated database."""
-    app = create_app(repo.db_file)
+    app = create_app(repo.db_path)
     app.config['REPOSITORY'] = repo
     app.config['TESTING'] = True
 
