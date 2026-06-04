@@ -1,0 +1,36 @@
+name: AcademyOps CI/CD Quality Gate
+
+# Trigger the workflow on pushes and pull requests to the main branch
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    name: Run Automated Tests
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Download your code onto the GitHub server
+    - name: Check out repository
+      uses: actions/checkout@v4
+
+    # Step 2: Install Python
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.14" 
+
+    # Step 3: Install all your project packages
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest
+
+    # Step 4: Run the exact command you run locally!
+    - name: Execute Pytest Suite
+      run: |
+        pytest -v
