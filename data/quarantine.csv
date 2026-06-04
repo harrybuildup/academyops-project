@@ -1,4 +1,104 @@
 name,phone,source,notes,rejection_reason
+Eleanor Vance,+15551001,LinkedIn,Interested in the full-stack web development track.,Duplicate phone number already exists in database system of record
+Siddharth Nair,+15551002,Google,Downloaded the data science course syllabus PDF.,Duplicate phone number already exists in database system of record
+Elena Rostova,+15551003,LinkedIn,Requested details on part-time evening schedules.,Duplicate phone number already exists in database system of record
+Alex Mercer,+15551004,Google,Wants to know if there are scholarships for Data Engineering.,Duplicate phone number already exists in database system of record
+Marcus Vance,+15551005,LinkedIn,Colleague of an alumni student. Thinks it looks promising.,Duplicate phone number already exists in database system of record
+Chloe Tanaka,+15551006,Google,Hoping to transition from marketing into UX/UI or front-end.,Duplicate phone number already exists in database system of record
+Omar Farooq,+15551007,LinkedIn,Working professional looking for weekend bootcamp tracks.,Duplicate phone number already exists in database system of record
+Amara Okafor,+15551008,Google,Wants to clarify if JavaScript or Python is taught first.,Duplicate phone number already exists in database system of record
+Liam Gallagher,+15551009,LinkedIn,Self-taught dev looking for a formal certification.,Duplicate phone number already exists in database system of record
+Sofia Martinez,+15551010,Google,Inquired via ad link about the career placement metrics.,Duplicate phone number already exists in database system of record
+Devon Brooks,+15551011,LinkedIn,Wants info on the Python for Data Analytics module.,Duplicate phone number already exists in database system of record
+Yuki Sato,+15551012,Google,wants to enroll if there is a hybrid option available.,Duplicate phone number already exists in database system of record
+Zoe Dubois,+15551013,LinkedIn,Needs an intermediate curriculum on database design.,Duplicate phone number already exists in database system of record
+Lucas Ferreira,+15551014,Google,curious about the capstone project scope.,Duplicate phone number already exists in database system of record
+Aisha Rahman,+15551015,LinkedIn,Requested a callback from an admissions counselor.,Duplicate phone number already exists in database system of record
+Mateo Rossi,+15551016,Google,Wants to check financing options and monthly payment plans.,Duplicate phone number already exists in database system of record
+Nina Williams,+15551017,LinkedIn,Wants to upgrade from QA testing to data engineering.,Duplicate phone number already exists in database system of record
+Kenji Tanaka,+15551018,Google,wants to review the react components syllabus.,Duplicate phone number already exists in database system of record
+Fatima Al-Sayed,+15551019,LinkedIn,Is Python mandatory for the analytics elective?,Duplicate phone number already exists in database system of record
+Hans Mueller,+15551020,Google,Looking for high-density curriculum in software engineering.,Duplicate phone number already exists in database system of record
+Priya Sharma,+15551021,LinkedIn,Wants evening classes due to day-shift corporate job.,Duplicate phone number already exists in database system of record
+Jean-Pierre Dupont,+15551022,Google,Requested a deep dive syllabus for the backend API block.,Duplicate phone number already exists in database system of record
+Sarah Jenkins,+15551023,LinkedIn,wants to know if local internships are arranged.,Duplicate phone number already exists in database system of record
+Carlos Mendez,+15551024,Google,Needs foundational math prep before launching into statistics.,Duplicate phone number already exists in database system of record
+Lin Wei,+15551025,LinkedIn,Wants concrete training on PostgreSQL database optimization.,Duplicate phone number already exists in database system of record
+Freja Nielsen,+15551026,Google,looking to switch paths from graphic design.,Duplicate phone number already exists in database system of record
+Gabriel Silva,+15551027,LinkedIn,interested in cloud architecture integrations.,Duplicate phone number already exists in database system of record
+Zara Khan,+15551028,Google,Wants clear instructions on remote enrollment processes.,Duplicate phone number already exists in database system of record
+David Kowalski,+15551029,LinkedIn,Wants to understand if docker containers are covered.,Duplicate phone number already exists in database system of record
+Amina Diallo,+15551030,Google,Looking to build a professional github portfolio.,Duplicate phone number already exists in database system of record
+James Henderson,+15551031,LinkedIn,Interested in software design patterns.,Duplicate phone number already exists in database system of record
+Isabella Rossi,+15551032,Google,wants to know the weekly time commitment.,Duplicate phone number already exists in database system of record
+Tariq Mahmood,+15551033,LinkedIn,Transitioning from mechanical engineering to software.,Duplicate phone number already exists in database system of record
+Elena Petrova,+15551034,Google,Needs help deciding between data analysis and web dev.,Duplicate phone number already exists in database system of record
+Oliver Bennett,+15551035,LinkedIn,Alumni recommendation. Very highly motivated.,Duplicate phone number already exists in database system of record
+Mei-Ling Rosenberg,+15551036,Google,wants to see past student project examples.,Duplicate phone number already exists in database system of record
+Arjun Mehta,+15551037,LinkedIn,wants to know about algorithmic complexity training.,Duplicate phone number already exists in database system of record
+Carmen Ortiz,+15551038,Google,Requested bilingual material if available.,Duplicate phone number already exists in database system of record
+Kofi Mensah,+15551039,LinkedIn,wants to specialize in cloud infrastructure patterns.,Duplicate phone number already exists in database system of record
+Astrid Lindqvist,+15551040,Google,Wants clear tracking on mentorship availability.,Duplicate phone number already exists in database system of record
+Ryan O'Connor,+15551041,LinkedIn,Experienced IT desktop support moving into scripting.,Duplicate phone number already exists in database system of record
+Nisha Patel,+15551042,Google,Inquiry regarding Flask framework compared to FastAPI.,Duplicate phone number already exists in database system of record
+Diego Alvarez,+15551043,LinkedIn,Wants explicit confirmation on job guarantee clauses.,Duplicate phone number already exists in database system of record
+Simona Halep,+15551044,Google,wants to learn pandas and numpy deeply.,Duplicate phone number already exists in database system of record
+Arthur Pendelton,+15551045,LinkedIn,Retiring military member transitioning to cybersecurity/code.,Duplicate phone number already exists in database system of record
+Theresa May,+15551046,Google,Wants clean timeline metrics on graduation schedules.,Duplicate phone number already exists in database system of record
+William Wright,+15551047,LinkedIn,wants clear tracking on software testing modules.,Duplicate phone number already exists in database system of record
+Rachel Green,+15551048,Google,wants to build interactive dashboard applications.,Duplicate phone number already exists in database system of record
+Monica Geller,+15551049,LinkedIn,looking for structural programming discipline.,Duplicate phone number already exists in database system of record
+Chandler Bing,+15551050,Google,wants to know if computing data models is heavily mathematical.,Duplicate phone number already exists in database system of record
+   Thomas Miller   ,  (555) 200-51  ,FACEBOOK,Inquired from mobile ad unit.,Duplicate phone number already exists in database system of record
+   Robert Taylor   ,  (555) 200-52  ,  linked-in  ,Needs curriculum emailed.,Duplicate phone number already exists in database system of record
+   Jessica Davies   ,  (555) 200-53  ,WebSite ,Left a callback message.,Duplicate phone number already exists in database system of record
+   Daniel White   ,  (555) 200-54  ,  goog  ,Wants details on financial aid.,Duplicate phone number already exists in database system of record
+   Michael Clark   ,  (555) 200-55  ,FACEBOOK,Looking for full-time schedule.,Duplicate phone number already exists in database system of record
+   James Rodriguez   ,  (555) 200-56  ,  linked-in  ,Interested in backend track.,Duplicate phone number already exists in database system of record
+   Emily Watson   ,  (555) 200-57  ,WebSite ,Needs remote learning options.,Duplicate phone number already exists in database system of record
+   William Harris   ,  (555) 200-58  ,  goog  ,Wants to start next month.,Duplicate phone number already exists in database system of record
+   Sophie Turner   ,  (555) 200-59  ,FACEBOOK,Requested syllabus via text.,Duplicate phone number already exists in database system of record
+   Oliver Green   ,  (555) 200-60  ,  linked-in  ,Alumni referral lead.,Duplicate phone number already exists in database system of record
+   Charlotte King   ,  (555) 200-61  ,WebSite ,Curious about placement rates.,Duplicate phone number already exists in database system of record
+   Benjamin Baker   ,  (555) 200-62  ,  goog  ,Left voicemail on main line.,Duplicate phone number already exists in database system of record
+   Amelia Carter   ,  (555) 200-63  ,FACEBOOK,Wants evening sessions only.,Duplicate phone number already exists in database system of record
+   Lucas Wright   ,  (555) 200-64  ,  linked-in  ,Working professional profile.,Duplicate phone number already exists in database system of record
+   Mia Thornton   ,  (555) 200-65  ,WebSite ,Inquiry on database modules.,Duplicate phone number already exists in database system of record
+   Henry Campbell   ,  (555) 200-66  ,  goog  ,Wants trial class link.,Duplicate phone number already exists in database system of record
+   Harper Mitchell   ,  (555) 200-67  ,FACEBOOK,Re-engaged from old form.,Duplicate phone number already exists in database system of record
+   Evelyn Adams   ,  (555) 200-68  ,  linked-in  ,Wants to update tech stack.,Duplicate phone number already exists in database system of record
+   Jack Phillips   ,  (555) 200-69  ,WebSite ,Needs Python basics prep.,Duplicate phone number already exists in database system of record
+   Aria Campbell   ,  (555) 200-70  ,  goog  ,Requested discount options.,Duplicate phone number already exists in database system of record
+   Samuel Evans   ,  (555) 200-71  ,FACEBOOK,Wants to learn data modeling.,Duplicate phone number already exists in database system of record
+   Grace Parker   ,  (555) 200-72  ,  linked-in  ,Transitioning from QA role.,Duplicate phone number already exists in database system of record
+   Daniel Edwards   ,  (555) 200-73  ,WebSite ,Sent from organic search.,Duplicate phone number already exists in database system of record
+   Lily Collins   ,  (555) 200-74  ,  goog  ,Wants portfolio review info.,Duplicate phone number already exists in database system of record
+   David Stewart   ,  (555) 200-75  ,FACEBOOK,Looking at UI extension tracks.,Duplicate phone number already exists in database system of record
+   Matthew Morris   ,  (555) 200-76  ,  linked-in  ,Wants JavaScript deep dive.,Duplicate phone number already exists in database system of record
+   Hannah Nguyen   ,  (555) 200-77  ,WebSite ,Needs weekend schedule details.,Duplicate phone number already exists in database system of record
+   Andrew Rivera   ,  (555) 200-78  ,  goog  ,Inquired from career page.,Duplicate phone number already exists in database system of record
+   Natalie Cook   ,  (555) 200-79  ,FACEBOOK,Wants job guarantee details.,Duplicate phone number already exists in database system of record
+   Joseph Rogers   ,  (555) 200-80  ,  linked-in  ,Experienced corporate lead.,Duplicate phone number already exists in database system of record
+   Elizabeth Morgan   ,  (555) 200-81  ,WebSite ,Needs certificate timeline.,Duplicate phone number already exists in database system of record
+   Christopher Bell   ,  (555) 200-82  ,  goog  ,Wants mentor availability info.,Duplicate phone number already exists in database system of record
+   Victoria Cooper   ,  (555) 200-83  ,FACEBOOK,Wants sample project links.,Duplicate phone number already exists in database system of record
+   Kevin Peterson   ,  (555) 200-84  ,  linked-in  ,Wants course pricing sheet.,Duplicate phone number already exists in database system of record
+   Lauren Bailey   ,  (555) 200-85  ,WebSite ,Needs hybrid path details.,Duplicate phone number already exists in database system of record
+   Ryan Reed   ,  (555) 200-86  ,  goog  ,Self-taught programmer lead.,Duplicate phone number already exists in database system of record
+   Megan Kelly   ,  (555) 200-87  ,FACEBOOK,Wants enrollment deadlines.,Duplicate phone number already exists in database system of record
+   Nathan Cox   ,  (555) 200-88  ,  linked-in  ,Requested call at 5 PM.,Duplicate phone number already exists in database system of record
+   Rachel Howard   ,  (555) 200-89  ,WebSite ,Wants analytics tracks.,Duplicate phone number already exists in database system of record
+   Christian Ward   ,  (555) 200-90  ,  goog  ,Looking for frontend modules.,Duplicate phone number already exists in database system of record
+   Emma Brooks   ,  (555) 200-91  ,FACEBOOK,Transitioning from sales.,Duplicate phone number already exists in database system of record
+   Justin Gray   ,  (555) 200-92  ,  linked-in  ,Inquired via direct message.,Duplicate phone number already exists in database system of record
+   Amanda Price   ,  (555) 200-93  ,WebSite ,Wants career counselor call.,Duplicate phone number already exists in database system of record
+   Brandon James   ,  (555) 200-94  ,  goog  ,Downloaded system brochure.,Duplicate phone number already exists in database system of record
+   Nicole Bennett   ,  (555) 200-95  ,FACEBOOK,Wants financing criteria.,Duplicate phone number already exists in database system of record
+   Robert Wood   ,  (555) 200-96  ,  linked-in  ,Wants cloud native course.,Duplicate phone number already exists in database system of record
+   Rebecca Watson   ,  (555) 200-97  ,WebSite ,Needs syllabus translation.,Duplicate phone number already exists in database system of record
+   Jonathan Ross   ,  (555) 200-98  ,  goog  ,Wants interview prep details.,Duplicate phone number already exists in database system of record
+   Melissa Perry   ,  (555) 200-99  ,FACEBOOK,Inquired from Instagram link.,Duplicate phone number already exists in database system of record
+   Aaron Jenkins   ,  (555) 200-100  ,  linked-in  ,Looking for data pipelines.,Duplicate phone number already exists in database system of record
 Jonathan Vance,,Google,No phone present. Critical break case.,Missing required field: phone number
 ,,Facebook,Missing name profile completely. Reject track.,Missing required field: name
 ,,Referral,Completely empty row metrics parsing error.,Missing required field: name
@@ -74,33 +174,43 @@ Megan Sterling,+1-INVALID-NUM,LinkedIn,Testing unplausible phone length or alpha
 Marcus Flint,123,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '123'
 Fiona Gallagher,abcdefg,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: 'abcdefg'
 Ian Curtis,000000,LinkedIn,Testing unplausible phone length or alphanumeric structures.,Malformed or non-plausible phone format: '000000'
-Sarah Connor Duplicate Copy,+1555999901,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-John Connor Duplicate Copy,+1555999902,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-Miles Dyson Duplicate Copy,+1555999903,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-Marcus Wright Duplicate Copy,+1555999904,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-Kyle Reese Duplicate Copy,+1555999905,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-Peter Silberman Duplicate Copy,+1555999906,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-Katherine Brewster Duplicate Copy,+1555999907,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-Grace Harper Duplicate Copy,+1555999908,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-Dani Ramos Duplicate Copy,+1555999909,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-Diego Ramos Duplicate Copy,+15559999010,goog,Intra-batch duplicate record!,Duplicate entry found within incoming CSV batch
-Database Double Challenger Eleanor,+15551001,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Siddharth,+15551002,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Elena,+15551003,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Alex,+15551004,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Marcus,+15551005,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Chloe,+15551006,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Omar,+15551007,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Amara,+15551008,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Liam,+15551009,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Sofia,+15551010,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Devon,+15551011,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Yuki,+15551012,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Zoe,+15551013,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Lucas,+15551014,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Aisha,+15551015,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Mateo,+15551016,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Nina,+15551017,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Kenji,+15551018,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Fatima,+15551019,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
-Database Double Challenger Hans,+15551020,Facebook,Testing cross-check validation against existing system rows.,Duplicate entry found within incoming CSV batch
+Sarah Connor,+1555999901,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+Sarah Connor Duplicate Copy,+1555999901,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+John Connor,+1555999902,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+John Connor Duplicate Copy,+1555999902,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+Miles Dyson,+1555999903,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+Miles Dyson Duplicate Copy,+1555999903,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+Marcus Wright,+1555999904,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+Marcus Wright Duplicate Copy,+1555999904,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+Kyle Reese,+1555999905,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+Kyle Reese Duplicate Copy,+1555999905,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+Peter Silberman,+1555999906,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+Peter Silberman Duplicate Copy,+1555999906,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+Katherine Brewster,+1555999907,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+Katherine Brewster Duplicate Copy,+1555999907,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+Grace Harper,+1555999908,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+Grace Harper Duplicate Copy,+1555999908,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+Dani Ramos,+1555999909,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+Dani Ramos Duplicate Copy,+1555999909,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+Diego Ramos,+15559999010,Google,First instance in batch.,Duplicate phone number already exists in database system of record
+Diego Ramos Duplicate Copy,+15559999010,goog,Intra-batch duplicate record!,Duplicate phone number already exists in database system of record
+Database Double Challenger Eleanor,+15551001,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Siddharth,+15551002,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Elena,+15551003,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Alex,+15551004,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Marcus,+15551005,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Chloe,+15551006,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Omar,+15551007,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Amara,+15551008,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Liam,+15551009,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Sofia,+15551010,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Devon,+15551011,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Yuki,+15551012,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Zoe,+15551013,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Lucas,+15551014,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Aisha,+15551015,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Mateo,+15551016,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Nina,+15551017,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Kenji,+15551018,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Fatima,+15551019,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
+Database Double Challenger Hans,+15551020,Facebook,Testing cross-check validation against existing system rows.,Duplicate phone number already exists in database system of record
