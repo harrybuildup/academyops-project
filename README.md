@@ -1,88 +1,54 @@
-# WP-03: Lead Management REST API (Flask)
+# WP-04 — Automated Test Suite & Quality Gates
 
-REST API for lead management built with Flask. Depends on WP-01 (Lead Repository).
+## Overview
 
-## Setup
+This module establishes automated testing for the **Lead Management REST API** and underlying **repository layer**. All tests run in isolation against fresh, temporary databases. A GitHub Actions CI workflow runs the full suite automatically on every push and pull request to `main`.
 
-```bash
-source venv/bin/activate
-pip install -r requirements.txt
-python src/api.py
-```
-
-API runs on `http://localhost:5000/api/v1`
-
-## Endpoints
-
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| GET | `/leads` | List leads (filters: `stage`, `source`; pagination: `page`, `limit`) |
-| GET | `/leads/{id}` | Get a lead |
-| POST | `/leads` | Create lead (required: `name`, `phone`) |
-| PATCH | `/leads/{id}/stage` | Update stage |
-| DELETE | `/leads/{id}` | Delete lead |
-
-## Quick Examples
-
-**List leads:**
-```bash
-curl "http://localhost:5000/api/v1/leads?stage=New&page=1&limit=10"
-```
-
-**Create lead:**
-```bash
-curl -X POST http://localhost:5000/api/v1/leads \
-  -H "Content-Type: application/json" \
-  -d '{"name": "John Doe", "phone": "+1-555-0100", "source": "google_ads"}'
-```
-
-**Update stage:**
-```bash
-curl -X PATCH http://localhost:5000/api/v1/leads/1/stage \
-  -H "Content-Type: application/json" \
-  -d '{"stage": "Contacted"}'
-```
-
-## Status Codes
-
-- **200** — OK
-- **201** — Created
-- **204** — Deleted
-- **400** — Bad request (validation error)
-- **404** — Not found
-
-## Error Response
-
-```json
-{
-  "error": "Human-readable message",
-  "details": "Optional context"
-}
-```
-
-## Testing
+## Running Tests Locally
 
 ```bash
+# Install test dependencies (if not already done)
+pip install pytest
+
+# Run all tests with verbose output
+pytest -v
+
+# Run a specific test file
 pytest tests/test_api.py -v
+
+# Run with coverage (optional)
+pip install pytest-cov
+pytest --cov=src tests/
 ```
 
-## Troubleshooting
+## Test Coverage
 
-**Port 5000 in use?**
-```bash
-python src/api.py --port 8080
-```
+- **Repository layer**: CRUD operations, constraint enforcement, error handling
+- **API endpoints**: Status codes, validation, pagination, filtering, error responses
+- **Isolation**: Each test gets a fresh, temporary SQLite database
 
-**Database not found?**
-```bash
-python src/cli.py list  # Initialize from WP-01
-```
+## CI/CD Workflow
 
-**422 error?**
-Check JSON body—missing required fields (`name`, `phone`).
+Every push to `main` and every pull request triggers `.github/workflows/ci.yml`:
 
-## Valid Pipeline Stages
+1. Checks out the code
+2. Sets up Python 3.14
+3. Installs dependencies
+4. Runs `pytest -v`
 
-`New` → `Contacted` → `Qualified` → `Demo` → `Enrolled` / `Lost`
+Tests must pass before merging to `main`.
 
----
+## Test Structure
+tests/
+├── conftest.py              # Fixtures (isolated_db, repo, client)
+├── test_repository.py       # Unit tests for LeadRepository
+└── test_api.py              # API endpoint tests
+
+
+## Key Test Characteristics
+
+- ✅ **Isolated**: Each test uses a temporary database; no shared state
+- ✅ **Independent**: Tests can run in any order
+- ✅ **Fast**: In-memory databases where practical
+- ✅ **Repeatable**: Same code, same result every time
+
