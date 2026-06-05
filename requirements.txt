@@ -21,6 +21,11 @@ plotly==6.8.0
 pandas==3.0.3
 requests==2.34.2
 
+# Analytics (WP-05)
+numpy==2.4.6
+scipy==1.17.1
+matplotlib==3.10.3
+
 # Testing
 pytest==9.0.3
 httpx2==2.3.0
