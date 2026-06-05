@@ -85,6 +85,7 @@ streamlit run src/dashboard/app.py
 | POST | `/api/v1/leads` | Create a lead | 201 / 400 / 422 |
 | PATCH | `/api/v1/leads/{id}/stage` | Advance pipeline stage | 200 / 404 / 422 |
 | DELETE | `/api/v1/leads/{id}` | Delete a lead | 204 / 404 |
+| POST | `/api/v1/leads/{id}/message` | Classify inbound message, suggest next action | 200 / 400 / 404 |
 
 Error shape: `{"error": "<message>"}`
 
@@ -126,15 +127,19 @@ academyops-project/
 │   │   ├── lead.py        LeadStage enum + LeadORM
 │   │   └── errors.py      Domain exceptions
 │   ├── schemas/
-│   │   └── lead.py        Pydantic request/response models
+│   │   ├── lead.py        Pydantic request/response models
+│   │   └── message.py     Message request/response models
 │   ├── utils/
 │   │   ├── logger.py
 │   │   └── cleansing.py
+│   ├── classifier/
+│   │   └── engine.py      Intent classifier (keyword rules)
 │   ├── dashboard/
 │   │   └── app.py         Streamlit dashboard
 ├── scripts/
-│   ├── init_db.py         Create schema
-│   └── seed_db.py         Populate with sample data
+│   ├── init_db.py              Create schema
+│   ├── seed_db.py              Populate with sample data
+│   └── evaluate_classifier.py  Classifier accuracy report
 ├── tests/
 │   ├── conftest.py
 │   ├── test_api.py        HTTP-level tests

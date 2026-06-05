@@ -9,8 +9,10 @@ from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from src.api import crud
+from src.classifier.engine import classify
 from src.database.connections import get_db
 from src.schemas.lead import LeadCreate, LeadListResponse, LeadResponse, LeadStageUpdate
+from src.schemas.message import MessageRequest, MessageResponse
 
 router = APIRouter(prefix="/api/v1", tags=["leads"])
 
@@ -61,3 +63,24 @@ def update_stage(lead_id: int, payload: LeadStageUpdate, db: Session = Depends(g
 @router.delete("/leads/{lead_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Delete a lead")
 def delete_lead(lead_id: int, db: Session = Depends(get_db)):
     crud.delete_lead(db, lead_id)
+
+
+@router.post(
+    "/leads/{lead_id}/message",
+    response_model=MessageResponse,
+    summary="Classify an inbound lead message",
+    responses={
+        400: {"description": "Missing or blank message"},
+        404: {"description": "Lead not found"},
+    },
+)
+def classify_message(lead_id: int, payload: MessageRequest, db: Session = Depends(get_db)):
+    """Classify the intent of an inbound message from a lead and suggest a next action."""
+    # Verify the lead exists — raises LeadNotFoundError (→ 404) if not.
+    lead = crud.get_lead(db, lead_id)
+    result = classify(payload.message, current_stage=lead.stage)
+    return MessageResponse(
+        intent=result.intent,
+        suggested_stage=result.suggested_stage,
+        reply=result.reply,
+    )
