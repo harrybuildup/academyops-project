@@ -4,13 +4,14 @@ Fetches data from the FastAPI backend at http://localhost:8000.
 Start with:  streamlit run src/dashboard/app.py
 """
 
+import os
 import requests
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 from datetime import datetime
 
-API_BASE = "http://localhost:8000/api/v1"
+API_BASE = os.getenv("API_BASE_URL", "http://localhost:8000/api/v1")
 
 st.set_page_config(page_title="AcademyOps Dashboard", layout="wide")
 
