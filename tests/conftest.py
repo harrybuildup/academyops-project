@@ -1,29 +1,51 @@
-import sqlite3
+"""tests/conftest.py — shared pytest fixtures."""
+
 import pytest
-from src.repository.lead_repository import LeadRepository
-from src.web.app import create_app
-from src.database.schemas import create_table
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from fastapi.testclient import TestClient
+
+from src.database.connections import Base, get_db
+from src.api.app import create_app
+
+import src.models.lead  # noqa: F401 — registers LeadORM on Base.metadata
+
 
 @pytest.fixture()
-def isolated_db(tmp_path):
-    """Creates a temporary SQLite database for testing."""
-    db_path = tmp_path / "test_academyops.db"
-    conn = sqlite3.connect(db_path)
-    create_table(conn)
-    
-    return str(db_path)
+def db_engine(tmp_path):
+    """Per-test isolated SQLite engine with the full schema."""
+    engine = create_engine(
+        f"sqlite:///{tmp_path}/test.db",
+        connect_args={"check_same_thread": False},
+    )
+    Base.metadata.create_all(bind=engine)
+    yield engine
+    Base.metadata.drop_all(bind=engine)
+
 
 @pytest.fixture()
-def repo(isolated_db):
-    """Provides a LeadRepository instance connected to the isolated test database."""
-    return LeadRepository(isolated_db)
+def db_session(db_engine):
+    """Raw SQLAlchemy session for CRUD unit tests."""
+    Session = sessionmaker(bind=db_engine)
+    session = Session()
+    yield session
+    session.close()
+
 
 @pytest.fixture()
-def client(repo, isolated_db):
-    """Provides a Flask test client with the app configured to use the isolated database."""
-    app = create_app(isolated_db)
-    app.config['REPOSITORY'] = repo
-    app.config['TESTING'] = True
+def client(db_engine):
+    """FastAPI TestClient with DB dependency overridden to the isolated engine."""
+    TestingSession = sessionmaker(bind=db_engine)
 
-    with app.test_client() as client:
-        yield client
+    def override_get_db():
+        db = TestingSession()
+        try:
+            yield db
+        finally:
+            db.close()
+
+    app = create_app()
+    app.dependency_overrides[get_db] = override_get_db
+
+    with TestClient(app, raise_server_exceptions=False) as c:
+        yield c

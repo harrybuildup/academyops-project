@@ -1,48 +1,148 @@
-# WP-06: Operations Dashboard
+# AcademyOps
 
-## Overview
+Lead-to-Enrollment Management System for EasySkill Career Academy.
 
-A non-technical, self-serve operations dashboard built with Streamlit for EasySkill Career Academy. It provides counselors and management with real-time visibility into pipeline health, with all metrics mathematically reconciling with the WP-05 analytics module.
+Tracks prospective students through a defined sales pipeline:
+**New → Contacted → Qualified → Demo → Enrolled / Lost**
 
-## Features
+---
 
-* **Interactive Global Filters:** Slice data dynamically by Date Range and Lead Source.
-* **Top-Level KPI Cards:** Instant tracking of Total Leads, Conversion Rate, and Active Leads.
-* **Dynamic Funnel Chart:** Visualizes conversion drop-off across the official pipeline stages (New → Contacted → Qualified → Demo → Enrolled).
-* **Recent Leads Table:** A clean, scrollable view of the most recent pipeline additions.
+## Stack
 
-## Prerequisites
+| Layer | Technology |
+|-------|-----------|
+| API | FastAPI + Pydantic + Uvicorn |
+| Database | PostgreSQL + SQLAlchemy |
+| Dashboard | Streamlit + Plotly |
+| Tests | pytest + httpx2 |
 
-* Python 3.x
-* The WP-03 Flask API must be running locally to serve data to the dashboard.
+---
 
-## Installation
-
-Ensure your virtual environment is active, then install the front-end dependencies:
+## Setup
 
 ```bash
-pip install streamlit pandas requests plotly
+# 1. Clone and enter the project
+git clone <repo-url>
+cd academyops-project
 
+# 2. Create and activate a virtual environment
+python -m venv .venv
+.venv\Scripts\activate        # Windows
+# source .venv/bin/activate   # macOS / Linux
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Configure environment
+copy .env.example .env        # Windows
+# cp .env.example .env        # macOS / Linux
+# Edit .env — set DATABASE_URL to your PostgreSQL connection string
+
+# 5. Initialise the schema
+python scripts/init_db.py
+
+# 6. (Optional) Seed with sample data
+python scripts/seed_db.py
 ```
 
-## Usage
+---
 
-### Option 1: Unified Runner (Recommended)
+## Running
 
-To launch both the backend Flask API and the frontend Streamlit dashboard simultaneously using the central process manager:
+### API + Dashboard together
 
 ```bash
 python main.py
-
 ```
 
-### Option 2: Standalone Execution
+| Service | URL |
+|---------|-----|
+| REST API | http://localhost:8000/api/v1 |
+| Swagger docs | http://localhost:8000/docs |
+| Dashboard | http://localhost:8501 |
 
-If your Flask API is already running in a separate terminal, launch the dashboard directly:
+### Standalone API
+
+```bash
+uvicorn src.api.app:app --reload --port 8000
+```
+
+### Standalone Dashboard
 
 ```bash
 streamlit run src/dashboard/app.py
-
 ```
 
-The dashboard will automatically open in your default web browser at `http://localhost:8501`.
+---
+
+## API Reference
+
+| Method | Endpoint | Purpose | Status codes |
+|--------|----------|---------|--------------|
+| GET | `/api/v1/health` | Liveness probe | 200 |
+| GET | `/api/v1/leads` | List leads (`stage`, `source`, `page`, `limit` params) | 200 |
+| GET | `/api/v1/leads/{id}` | Get a single lead | 200 / 404 |
+| POST | `/api/v1/leads` | Create a lead | 201 / 400 / 422 |
+| PATCH | `/api/v1/leads/{id}/stage` | Advance pipeline stage | 200 / 404 / 422 |
+| DELETE | `/api/v1/leads/{id}` | Delete a lead | 204 / 404 |
+
+Error shape: `{"error": "<message>"}`
+
+---
+
+## Tests
+
+```bash
+pytest
+```
+
+Tests use an isolated in-memory SQLite database — no live PostgreSQL needed.
+
+---
+
+## Environment variables
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `DATABASE_URL` | Yes | e.g. `postgresql://user:pass@localhost:5432/academyops_prod` |
+| `DEBUG` | No | `True` enables SQLAlchemy query logging (default: `False`) |
+
+---
+
+## Project structure
+
+```
+academyops-project/
+├── src/
+│   ├── api/               FastAPI application
+│   │   ├── app.py         Application factory
+│   │   ├── routes.py      API router (/api/v1/leads)
+│   │   ├── crud.py        Data-access layer
+│   │   └── dependencies.py  DB session injection
+│   ├── database/
+│   │   ├── connections.py SQLAlchemy engine + Base
+│   │   └── schemas.py     create_tables()
+│   ├── models/
+│   │   ├── lead.py        LeadStage enum + LeadORM
+│   │   └── errors.py      Domain exceptions
+│   ├── schemas/
+│   │   └── lead.py        Pydantic request/response models
+│   ├── utils/
+│   │   ├── logger.py
+│   │   └── cleansing.py
+│   ├── dashboard/
+│   │   └── app.py         Streamlit dashboard
+├── scripts/
+│   ├── init_db.py         Create schema
+│   └── seed_db.py         Populate with sample data
+├── tests/
+│   ├── conftest.py
+│   ├── test_api.py        HTTP-level tests
+│   └── test_crud.py       CRUD unit tests
+├── data/
+│   └── messy_leads.csv
+├── .env.example
+├── requirements.txt
+├── pyproject.toml
+└── main.py
+```

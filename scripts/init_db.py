@@ -1,13 +1,37 @@
-from src.database.connections import create_connection, close_connection
-from src.database.schemas import create_table
+"""scripts/init_db.py
 
-def initialize_database(db_file):
-    conn = create_connection(db_file)
-    if conn is not None:
-        create_table(conn)
-        close_connection(conn)
-    else:
-        print("Error! Cannot create the database connection.")
+Create the database schema.
+
+Usage
+-----
+    python scripts/init_db.py
+
+Reads DATABASE_URL from the environment (or .env).
+Safe to run multiple times — uses CREATE TABLE IF NOT EXISTS.
+"""
+
+import os
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+except ImportError:
+    pass
+
+from src.database.schemas import create_tables
 
 if __name__ == "__main__":
-    initialize_database("data/academyops.db")
+    db_url = os.getenv("DATABASE_URL", "")
+    if not db_url:
+        print("ERROR: DATABASE_URL is not set. Copy .env.example to .env and fill in the values.")
+        sys.exit(1)
+
+    # Hide credentials in the printed output
+    safe_url = db_url.split("@")[-1] if "@" in db_url else db_url
+    print(f"→ Connecting to: {safe_url}")
+    create_tables()
+    print("✅  Schema created (or already up-to-date).")

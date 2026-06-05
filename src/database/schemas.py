@@ -1,25 +1,9 @@
-import sqlite3
-from src.database.connections import create_connection
+# src/database/schemas.py
 
-def create_table(conn):
-    """ create a table from the create_table_sql statement
-    :param conn: Connection object
-    :return:
-    """
-    try:
-        sql_create_table = """ CREATE TABLE IF NOT EXISTS leads (
-                                    id INTEGER PRIMARY KEY AUTOINCREMENT,
-                                    name TEXT NOT NULL,
-                                    phone TEXT NOT NULL UNIQUE,
-                                    source TEXT,
-                                    stage TEXT NOT NULL,
-                                    notes TEXT,
-                                    created_at TEXT NOT NULL,
-                                    updated_at TEXT NOT NULL
-                                ); """
-        c = conn.cursor()
-        c.execute(sql_create_table)
-        print("Table 'leads' created successfully.")
-    except sqlite3.Error as e:
-        print(e)
+from src.database.connections import Base, get_engine
 
+
+def create_tables() -> None:
+    """Issue CREATE TABLE IF NOT EXISTS for every SQLAlchemy-mapped model."""
+    import src.models.lead  # noqa: F401 — registers LeadORM on Base.metadata
+    Base.metadata.create_all(bind=get_engine())
