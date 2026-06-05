@@ -8,7 +8,9 @@ starlette==1.2.1
 
 # Database
 sqlalchemy==2.0.50
-psycopg2-binary==2.9.10
+# psycopg2-binary is only needed when connecting to a real PostgreSQL server.
+# Install separately:  pip install psycopg2-binary==2.9.12
+# Tests use SQLite and do not require it.
 
 # Configuration
 python-dotenv==1.1.0
@@ -21,7 +23,7 @@ requests==2.34.2
 
 # Testing
 pytest==9.0.3
-httpx2==0.28.1
+httpx2==2.3.0
 
 # Utilities
 annotated-types==0.7.0
