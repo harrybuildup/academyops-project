@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AcademyOps — Lead-to-Enrollment CRM</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- Custom Styling -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Toast Notification System -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-logo"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="brand-text">
+          <h1>AcademyOps</h1>
+          <span>EasySkill Academy</span>
+        </div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="dashboard-tab">
+          <i class="fa-solid fa-chart-line"></i>
+          <span>Pipeline & Analytics</span>
+        </button>
+        <button class="nav-item" data-tab="leads-tab">
+          <i class="fa-solid fa-users"></i>
+          <span>Lead Operations</span>
+        </button>
+        <button class="nav-item" data-tab="triage-tab">
+          <i class="fa-solid fa-comments"></i>
+          <span>Message Triage</span>
+        </button>
+        <button class="nav-item" data-tab="abtest-tab">
+          <i class="fa-solid fa-flask-vial"></i>
+          <span>A/B Testing</span>
+        </button>
+      </nav>
+      
+      <div class="sidebar-footer">
+        <div class="api-status">
+          <span class="status-indicator online"></span>
+          <span>API Connected</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+      
+      <!-- Top Bar / Header -->
+      <header class="top-bar">
+        <div class="page-title-area">
+          <h2 id="current-tab-title">Pipeline & Analytics</h2>
+          <p id="current-tab-subtitle">Track prospective students and check sales metrics</p>
+        </div>
+        <div class="header-actions">
+          <button id="theme-toggle" class="icon-btn" title="Toggle Light/Dark Mode">
+            <i class="fa-solid fa-moon"></i>
+          </button>
+          <button id="refresh-all-btn" class="btn btn-secondary">
+            <i class="fa-solid fa-arrows-rotate"></i>
+            <span>Refresh Data</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Content Views (Tabs) -->
+      <div class="tab-content-container">
+        
+        <!-- Tab 1: Pipeline & Analytics -->
+        <section id="dashboard-tab" class="tab-pane active">
+          <!-- Filter Panel -->
+          <div class="glass-card filter-bar">
+            <div class="filter-group">
+              <label for="filter-source"><i class="fa-solid fa-filter"></i> Lead Source</label>
+              <select id="filter-source" class="form-control">
+                <option value="All">All Sources</option>
+              </select>
+            </div>
+            
+            <div class="filter-group">
+              <label for="filter-date-start"><i class="fa-solid fa-calendar"></i> Date Range</label>
+              <div class="date-range-inputs">
+                <input type="date" id="filter-date-start" class="form-control">
+                <span>to</span>
+                <input type="date" id="filter-date-end" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <!-- KPI Cards Grid -->
+          <div class="kpi-grid">
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon icon-blue"><i class="fa-solid fa-users"></i></div>
+              <div class="kpi-info">
+                <h3>Total Leads</h3>
+                <span id="kpi-total-leads" class="kpi-value">-</span>
+              </div>
+            </div>
+            
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon icon-green"><i class="fa-solid fa-graduation-cap"></i></div>
+              <div class="kpi-info">
+                <h3>Conversion Rate</h3>
+                <span id="kpi-conversion-rate" class="kpi-value">-</span>
+              </div>
+            </div>
+            
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon icon-orange"><i class="fa-solid fa-spinner"></i></div>
+              <div class="kpi-info">
+                <h3>Active Leads</h3>
+                <span id="kpi-active-leads" class="kpi-value">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Section -->
+          <div class="charts-grid">
+            <div class="glass-card chart-card">
+              <div class="card-header">
+                <h3>Sales Conversion Funnel</h3>
+                <p>Leads progressing through pipeline stages</p>
+              </div>
+              <div class="chart-container">
+                <canvas id="funnelChart"></canvas>
+              </div>
+            </div>
+            
+            <div class="glass-card chart-card">
+              <div class="card-header">
+                <h3>Conversion Rate by Source</h3>
+                <p>Enrollment percentage per acquisition channel</p>
+              </div>
+              <div class="chart-container">
+                <canvas id="sourceChart"></canvas>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recent Leads Overview (List View) -->
+          <div class="glass-card list-card">
+            <div class="card-header flex-header">
+              <div>
+                <h3>Recent Leads</h3>
+                <p>Latest prospects captured</p>
+              </div>
+              <button id="download-csv-btn" class="btn btn-secondary btn-sm">
+                <i class="fa-solid fa-download"></i> Download Filtered CSV
+              </button>
+            </div>
+            <div class="table-responsive">
+              <table class="leads-table">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Source</th>
+                    <th>Stage</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody id="recent-leads-tbody">
+                  <!-- JS populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Tab 2: Lead Operations (CRUD) -->
+        <section id="leads-tab" class="tab-pane">
+          <div class="crud-layout">
+            
+            <!-- Left Side: Table & Search -->
+            <div class="crud-list-panel glass-card">
+              <div class="panel-header">
+                <div class="search-box">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" id="lead-search-input" placeholder="Search by name or phone...">
+                </div>
+                <button id="add-lead-btn" class="btn btn-primary">
+                  <i class="fa-solid fa-plus"></i> Add Lead
+                </button>
+              </div>
+              
+              <div class="table-responsive">
+                <table class="leads-table interactive-table">
+                  <thead>
+                    <tr>
+                      <th>Name</th>
+                      <th>Phone</th>
+                      <th>Source</th>
+                      <th>Stage</th>
+                    </tr>
+                  </thead>
+                  <tbody id="crud-leads-tbody">
+                    <!-- JS populated -->
+                  </tbody>
+                </table>
+              </div>
+              
+              <!-- Pagination controls -->
+              <div class="pagination-container">
+                <span id="pagination-info" class="pagination-info">Showing 0-0 of 0</span>
+                <div class="pagination-controls">
+                  <button id="prev-page-btn" class="icon-btn btn-sm" disabled><i class="fa-solid fa-chevron-left"></i></button>
+                  <span id="current-page-num" class="page-number">1</span>
+                  <button id="next-page-btn" class="icon-btn btn-sm" disabled><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Right Side: Details Inspector -->
+            <div class="crud-details-panel">
+              <div id="no-lead-selected" class="glass-card empty-state-card">
+                <i class="fa-solid fa-user-tag"></i>
+                <h3>No Lead Selected</h3>
+                <p>Click on a row in the table to view details, update stage, or log communication.</p>
+              </div>
+              
+              <div id="lead-inspector-card" class="glass-card inspector-card hidden">
+                <div class="inspector-header">
+                  <div class="lead-avatar-circle" id="inspector-avatar-text">JD</div>
+                  <div class="lead-header-meta">
+                    <h3 id="inspector-name">Jane Doe</h3>
+                    <span id="inspector-created-at" class="timestamp">Created on June 2026</span>
+                  </div>
+                </div>
+                
+                <div class="inspector-details-grid">
+                  <div class="detail-row">
+                    <span class="detail-label"><i class="fa-solid fa-phone"></i> Phone</span>
+                    <span class="detail-value" id="inspector-phone">09112345678</span>
+                  </div>
+                  
+                  <div class="detail-row">
+                    <span class="detail-label"><i class="fa-solid fa-share-nodes"></i> Source</span>
+                    <span class="detail-value" id="inspector-source">Google</span>
+                  </div>
+
+                  <div class="detail-row">
+                    <span class="detail-label"><i class="fa-solid fa-route"></i> Stage</span>
+                    <div class="stage-selector-container">
+                      <select id="inspector-stage-select" class="form-control stage-badge-select">
+                        <option value="New">New</option>
+                        <option value="Contacted">Contacted</option>
+                        <option value="Qualified">Qualified</option>
+                        <option value="Demo">Demo</option>
+                        <option value="Enrolled">Enrolled</option>
+                        <option value="Lost">Lost</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="inspector-notes">
+                  <h4><i class="fa-solid fa-pen-nib"></i> Notes</h4>
+                  <p id="inspector-notes-text" class="notes-content">No notes recorded.</p>
+                </div>
+
+                <div class="inspector-actions">
+                  <button id="inspector-delete-btn" class="btn btn-danger btn-block">
+                    <i class="fa-solid fa-trash-can"></i> Delete Lead Record
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Tab 3: Message Triage (AI Simulator) -->
+        <section id="triage-tab" class="tab-pane">
+          <div class="triage-layout">
+            <!-- Left Panel: Select Lead -->
+            <div class="triage-leads-panel glass-card">
+              <div class="panel-header">
+                <h3>Select Lead</h3>
+              </div>
+              <div class="triage-leads-list" id="triage-leads-list-container">
+                <!-- JS populated list of leads -->
+              </div>
+            </div>
+
+            <!-- Right Panel: Message Area & Prediction Output -->
+            <div class="triage-chat-panel">
+              <div id="no-triage-lead-selected" class="glass-card empty-state-card">
+                <i class="fa-solid fa-comment-dots"></i>
+                <h3>Select a Lead for Triage</h3>
+                <p>Choose a lead from the list to simulate receiving an inbound SMS/email and classify it.</p>
+              </div>
+
+              <div id="triage-active-container" class="hidden">
+                <!-- Header with lead info -->
+                <div class="glass-card triage-header-card">
+                  <div class="triage-lead-profile">
+                    <h3 id="triage-lead-name">Jane Doe</h3>
+                    <div class="triage-lead-meta">
+                      <span>Current Stage:</span>
+                      <span id="triage-lead-stage-badge" class="badge">New</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Simulation Form -->
+                <div class="glass-card triage-form-card">
+                  <h4><i class="fa-solid fa-bolt-lightning"></i> AI Triage Simulator</h4>
+                  <p class="description">Simulate a message sent by this prospect to see how the system auto-classifies their intent.</p>
+                  
+                  <div class="form-group">
+                    <textarea id="triage-message-input" class="form-control" rows="4" placeholder="Enter message here (e.g. 'Can we schedule a call for tomorrow morning? Thanks!')"></textarea>
+                  </div>
+                  
+                  <div class="form-actions">
+                    <button id="triage-classify-btn" class="btn btn-primary">
+                      <i class="fa-solid fa-robot"></i> Classify Message & Generate Response
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Classification Results -->
+                <div id="triage-results-card" class="glass-card triage-results-card hidden">
+                  <div class="results-header">
+                    <h4>Analysis Results</h4>
+                    <span class="confidence-tag">AI Powered</span>
+                  </div>
+
+                  <div class="results-grid">
+                    <div class="result-tile">
+                      <span class="tile-label">Detected Intent</span>
+                      <span id="triage-result-intent" class="tile-value">-</span>
+                    </div>
+                    
+                    <div class="result-tile">
+                      <span class="tile-label">Recommended Stage</span>
+                      <div class="triage-recommendation-block">
+                        <span id="triage-result-stage" class="tile-value stage-highlight">-</span>
+                        <button id="triage-apply-stage-btn" class="btn btn-secondary btn-xs">
+                          <i class="fa-solid fa-check"></i> Apply Stage
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="reply-template-box">
+                    <h5>Suggested Reply Template</h5>
+                    <div class="template-content">
+                      <pre id="triage-result-reply"></pre>
+                    </div>
+                    <button id="triage-copy-reply-btn" class="btn btn-link btn-xs">
+                      <i class="fa-solid fa-copy"></i> Copy Reply Template
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        
+        <!-- Tab 4: Hypothesis Testing (A/B Test) -->
+        <section id="abtest-tab" class="tab-pane">
+          <div class="ab-layout">
+            
+            <!-- Controls Form -->
+            <div class="glass-card ab-controls">
+              <h3>Configure A/B Hypothesis Test</h3>
+              <p>Compare the enrollment rates of any two lead sources using a two-proportion z-test.</p>
+              
+              <div class="ab-form-grid">
+                <div class="form-group">
+                  <label for="ab-source-1">Source A (Baseline)</label>
+                  <select id="ab-source-1" class="form-control">
+                    <!-- JS populated -->
+                  </select>
+                </div>
+                
+                <div class="form-group">
+                  <label for="ab-source-2">Source B (Alternative)</label>
+                  <select id="ab-source-2" class="form-control">
+                    <!-- JS populated -->
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label for="ab-alpha">Significance Level (α)</label>
+                  <select id="ab-alpha" class="form-control">
+                    <option value="0.01">0.01 (99% Confidence)</option>
+                    <option value="0.05" selected>0.05 (95% Confidence)</option>
+                    <option value="0.10">0.10 (90% Confidence)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="ab-actions">
+                <button id="ab-run-btn" class="btn btn-primary">
+                  <i class="fa-solid fa-calculator"></i> Run Hypothesis Test
+                </button>
+              </div>
+            </div>
+
+            <!-- Statistical Results -->
+            <div id="ab-results-container" class="glass-card ab-results hidden">
+              <div class="ab-results-header">
+                <h3>Test Results</h3>
+                <span id="ab-significance-badge" class="badge badge-success">Significant</span>
+              </div>
+
+              <div class="ab-stats-grid">
+                <!-- Source A Card -->
+                <div class="ab-source-stats-card">
+                  <h4 id="ab-source-1-name">Google</h4>
+                  <div class="stat-items">
+                    <div class="stat-item">
+                      <span class="label">Total Leads (N₁)</span>
+                      <span id="ab-n1" class="value">-</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="label">Enrolled (K₁)</span>
+                      <span id="ab-enrolled1" class="value">-</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="label">Conversion (p₁)</span>
+                      <span id="ab-rate1" class="value">-</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Divider -->
+                <div class="ab-vs-indicator">VS</div>
+
+                <!-- Source B Card -->
+                <div class="ab-source-stats-card">
+                  <h4 id="ab-source-2-name">Facebook</h4>
+                  <div class="stat-items">
+                    <div class="stat-item">
+                      <span class="label">Total Leads (N₂)</span>
+                      <span id="ab-n2" class="value">-</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="label">Enrolled (K₂)</span>
+                      <span id="ab-enrolled2" class="value">-</span>
+                    </div>
+                    <div class="stat-item">
+                      <span class="label">Conversion (p₂)</span>
+                      <span id="ab-rate2" class="value">-</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Statistical Parameters -->
+              <div class="ab-math-card">
+                <h5>Calculated Test Statistics</h5>
+                <div class="math-values">
+                  <div class="math-value">
+                    <span class="label">Z-Statistic</span>
+                    <span id="ab-z-score" class="value">-</span>
+                  </div>
+                  <div class="math-value">
+                    <span class="label">P-Value</span>
+                    <span id="ab-p-value" class="value">-</span>
+                  </div>
+                  <div class="math-value">
+                    <span class="label">Alpha (α)</span>
+                    <span id="ab-alpha-val" class="value">0.05</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Text Conclusion -->
+              <div class="ab-conclusion-box" id="ab-conclusion-box">
+                <i class="fa-solid fa-circle-info"></i>
+                <p id="ab-conclusion-text"></p>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+  </div>
+
+  <!-- Add Lead Modal -->
+  <div id="add-lead-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card">
+      <div class="modal-header">
+        <h3>Add New Lead</h3>
+        <button id="close-modal-btn" class="close-btn">&times;</button>
+      </div>
+      <form id="add-lead-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="lead-name">Full Name *</label>
+            <input type="text" id="lead-name" class="form-control" required placeholder="Jane Doe">
+          </div>
+          
+          <div class="form-group">
+            <label for="lead-phone">Phone Number *</label>
+            <input type="tel" id="lead-phone" class="form-control" required placeholder="09112345678">
+          </div>
+          
+          <div class="form-group">
+            <label for="lead-source-select">Source *</label>
+            <select id="lead-source-select" class="form-control" required>
+              <option value="Google">Google</option>
+              <option value="Facebook">Facebook</option>
+              <option value="Email">Email</option>
+              <option value="Direct">Direct</option>
+              <option value="Referral">Referral</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="lead-stage-select">Stage *</label>
+            <select id="lead-stage-select" class="form-control" required>
+              <option value="New">New</option>
+              <option value="Contacted">Contacted</option>
+              <option value="Qualified">Qualified</option>
+              <option value="Demo">Demo</option>
+              <option value="Enrolled">Enrolled</option>
+              <option value="Lost">Lost</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lead-notes">Notes</label>
+          <textarea id="lead-notes" class="form-control" rows="3" placeholder="Additional details..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancel-modal-btn" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Lead</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,18 +1,16 @@
 """main.py — Unified launcher for AcademyOps.
 
-Starts the FastAPI backend (uvicorn, port 8000) and the Streamlit dashboard
-(port 8501) as concurrent processes.
+Starts the FastAPI backend (uvicorn, port 8000).
 
 Usage
 -----
     python main.py
 
-Stop with Ctrl+C — both processes are shut down cleanly.
+Stop with Ctrl+C.
 """
 
 import subprocess
 import sys
-import time
 
 try:
     from dotenv import load_dotenv
@@ -23,12 +21,12 @@ except ImportError:
 
 def main() -> None:
     print("\n" + "=" * 55)
-    print("  AcademyOps — Lead-to-Enrollment Management System")
+    print("  AcademyOps - Lead-to-Enrollment CRM")
     print("=" * 55)
     print()
-    print("  API  →  http://localhost:8000/api/v1")
-    print("  Docs →  http://localhost:8000/docs")
-    print("  Dashboard → http://localhost:8501")
+    print("  API           -> http://localhost:8000/api/v1")
+    print("  Documentation -> http://localhost:8000/docs")
+    print("  Web CRM App   -> http://localhost:8000")
     print()
     print("  Press Ctrl+C to stop.\n")
 
@@ -36,23 +34,16 @@ def main() -> None:
         [sys.executable, "-m", "uvicorn", "src.api.app:app", "--port", "8000"],
     )
 
-    time.sleep(2)
-
-    dashboard_proc = subprocess.Popen(
-        [sys.executable, "-m", "streamlit", "run", "src/dashboard/app.py", "--logger.level=error"],
-    )
-
     try:
         api_proc.wait()
     except KeyboardInterrupt:
         print("\nShutting down...")
     finally:
-        for proc in (api_proc, dashboard_proc):
-            proc.terminate()
-            try:
-                proc.wait(timeout=5)
-            except subprocess.TimeoutExpired:
-                proc.kill()
+        api_proc.terminate()
+        try:
+            api_proc.wait(timeout=5)
+        except subprocess.TimeoutExpired:
+            api_proc.kill()
         print("Stopped. Goodbye.")
 
 
