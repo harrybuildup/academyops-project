@@ -70,13 +70,26 @@ def test_api_auth_login_invalid_credentials(client):
     assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
 
-def test_api_protected_route_without_token():
-    # Since client fixture overrides get_current_user, we can instantiate a raw client
-    # with no overrides to test actual protection.
+def test_api_protected_route_without_token(db_engine):
+    # Override get_db to prevent RuntimeError on missing DATABASE_URL in CI
     from fastapi.testclient import TestClient
     from src.api.app import create_app
+    from src.database.connections import get_db
+    from sqlalchemy.orm import sessionmaker
     
+    TestingSession = sessionmaker(bind=db_engine)
+
+    def override_get_db():
+        db = TestingSession()
+        try:
+            yield db
+        finally:
+            db.close()
+            
     app = create_app()
+    app.dependency_overrides[get_db] = override_get_db
+    # get_current_user is NOT overridden to test actual authorization checks
+    
     with TestClient(app) as c:
         response = c.get("/api/v1/leads")
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
