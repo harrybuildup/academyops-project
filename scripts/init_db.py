@@ -32,6 +32,6 @@ if __name__ == "__main__":
 
     # Hide credentials in the printed output
     safe_url = db_url.split("@")[-1] if "@" in db_url else db_url
-    print(f"→ Connecting to: {safe_url}")
+    print(f"-> Connecting to: {safe_url}")
     create_tables()
-    print("✅  Schema created (or already up-to-date).")
+    print("[SUCCESS] Schema created (or already up-to-date).")

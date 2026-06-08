@@ -56,6 +56,10 @@
           <span class="status-indicator online"></span>
           <span>API Connected</span>
         </div>
+        <button id="logout-btn" class="btn btn-secondary btn-xs btn-block" style="margin-top: 12px; display: none;">
+          <i class="fa-solid fa-right-from-bracket"></i>
+          <span>Logout</span>
+        </button>
       </div>
     </aside>
 
@@ -549,6 +553,34 @@
           <button type="button" id="cancel-modal-btn" class="btn btn-secondary">Cancel</button>
           <button type="submit" class="btn btn-primary">Save Lead</button>
         </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Login Overlay Panel -->
+  <div id="login-overlay" class="login-overlay-container">
+    <div class="glass-card login-card">
+      <div class="login-header">
+        <i class="fa-solid fa-graduation-cap brand-login-logo"></i>
+        <h2>AcademyOps CRM</h2>
+        <p>Please log in to manage your pipeline</p>
+      </div>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-username">Username</label>
+          <input type="text" id="login-username" class="form-control" placeholder="Enter username" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" class="form-control" placeholder="Enter password" required autocomplete="current-password">
+        </div>
+        <div id="login-error" class="login-error-msg hidden">
+          <i class="fa-solid fa-circle-exclamation"></i>
+          <span id="login-error-text">Invalid credentials</span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block" style="margin-top: 16px;">
+          <span>Login</span>
+        </button>
       </form>
     </div>
   </div>

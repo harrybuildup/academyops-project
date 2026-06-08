@@ -4,9 +4,41 @@ const API_BASE = window.location.origin.includes('localhost:8000')
   ? '/api/v1' 
   : 'http://localhost:8000/api/v1';
 
+/**
+ * Custom wrapper for standard fetch including authorization bearer token
+ */
+async function request(endpoint, options = {}) {
+  const token = localStorage.getItem('auth_token');
+  const headers = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(`${API_BASE}${endpoint}`, {
+    ...options,
+    headers
+  });
+
+  if (!response.ok) {
+    // Automatically log out on unauthorized response (401)
+    if (response.status === 401 && !endpoint.includes('/auth/login')) {
+      localStorage.removeItem('auth_token');
+      window.location.reload();
+    }
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.detail || err.error || 'API request failed.');
+  }
+
+  if (response.status === 204) return true;
+  return response.json();
+}
+
 export const API = {
   /**
-   * Health Check
+   * Health Check (Public)
    */
   async checkHealth() {
     try {
@@ -18,6 +50,26 @@ export const API = {
   },
 
   /**
+   * Login (Public)
+   */
+  async login(username, password) {
+    return request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ username, password })
+    });
+  },
+
+  /**
+   * Register (Optional)
+   */
+  async register(username, email, password) {
+    return request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ username, email, password })
+    });
+  },
+
+  /**
    * Fetch paginated and filtered leads list
    */
   async getLeads(page = 1, limit = 100, stage = null, source = null) {
@@ -25,12 +77,7 @@ export const API = {
     if (stage && stage !== 'All') params.append('stage', stage);
     if (source && source !== 'All') params.append('source', source);
 
-    const response = await fetch(`${API_BASE}/leads?${params.toString()}`);
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Failed to fetch leads.');
-    }
-    return response.json();
+    return request(`/leads?${params.toString()}`);
   },
 
   /**
@@ -55,74 +102,45 @@ export const API = {
    * Fetch details of a single lead by ID
    */
   async getLead(id) {
-    const response = await fetch(`${API_BASE}/leads/${id}`);
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || `Failed to fetch lead with ID ${id}.`);
-    }
-    return response.json();
+    return request(`/leads/${id}`);
   },
 
   /**
    * Create a new lead record
    */
   async createLead(leadData) {
-    const response = await fetch(`${API_BASE}/leads`, {
+    return request('/leads', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(leadData)
     });
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Failed to create lead.');
-    }
-    return response.json();
   },
 
   /**
    * Update the stage of an existing lead
    */
   async updateLeadStage(id, stage) {
-    const response = await fetch(`${API_BASE}/leads/${id}/stage`, {
+    return request(`/leads/${id}/stage`, {
       method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ stage })
     });
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Failed to update lead stage.');
-    }
-    return response.json();
   },
 
   /**
    * Delete a lead record
    */
   async deleteLead(id) {
-    const response = await fetch(`${API_BASE}/leads/${id}`, {
+    return request(`/leads/${id}`, {
       method: 'DELETE'
     });
-    if (!response.ok) {
-      if (response.status === 204) return true;
-      const err = await response.json();
-      throw new Error(err.error || 'Failed to delete lead.');
-    }
-    return true;
   },
 
   /**
    * Classify an inbound message from a lead
    */
   async classifyMessage(id, message) {
-    const response = await fetch(`${API_BASE}/leads/${id}/message`, {
+    return request(`/leads/${id}/message`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message })
     });
-    if (!response.ok) {
-      const err = await response.json();
-      throw new Error(err.error || 'Failed to classify message.');
-    }
-    return response.json();
   }
 };

@@ -24,6 +24,15 @@ const tabPanes = document.querySelectorAll('.tab-pane');
 const currentTabTitle = document.getElementById('current-tab-title');
 const currentTabSubtitle = document.getElementById('current-tab-subtitle');
 
+// Auth DOM elements
+const loginOverlay = document.getElementById('login-overlay');
+const loginForm = document.getElementById('login-form');
+const loginUsernameInput = document.getElementById('login-username');
+const loginPasswordInput = document.getElementById('login-password');
+const loginErrorMsg = document.getElementById('login-error');
+const loginErrorText = document.getElementById('login-error-text');
+const logoutBtn = document.getElementById('logout-btn');
+
 // Tab titles and subtitles for navigation header
 const tabMetadata = {
   'dashboard-tab': {
@@ -63,7 +72,6 @@ export function showToast(message, type = 'success', duration = 4000) {
   
   container.appendChild(toast);
   
-  // Slide out and remove toast after duration
   setTimeout(() => {
     toast.style.animation = 'slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) reverse forwards';
     toast.addEventListener('animationend', () => {
@@ -76,7 +84,9 @@ export function showToast(message, type = 'success', duration = 4000) {
  * Handle Tab Switching with clean transitions
  */
 function switchTab(tabId) {
-  // Update nav buttons
+  // If not authenticated, block navigation actions
+  if (!localStorage.getItem('auth_token')) return;
+
   tabButtons.forEach(btn => {
     if (btn.getAttribute('data-tab') === tabId) {
       btn.classList.add('active');
@@ -85,7 +95,6 @@ function switchTab(tabId) {
     }
   });
 
-  // Update tab panes
   tabPanes.forEach(pane => {
     if (pane.id === tabId) {
       pane.classList.add('active');
@@ -94,13 +103,11 @@ function switchTab(tabId) {
     }
   });
 
-  // Update header text
   if (tabMetadata[tabId]) {
     currentTabTitle.textContent = tabMetadata[tabId].title;
     currentTabSubtitle.textContent = tabMetadata[tabId].subtitle;
   }
 
-  // Specific tab reload triggers
   if (tabId === 'dashboard-tab') {
     refreshDashboard();
   } else if (tabId === 'leads-tab') {
@@ -141,7 +148,6 @@ function toggleTheme() {
   }
   localStorage.setItem('theme', state.theme);
   
-  // Re-draw charts with appropriate text colors if dashboard is active
   const activeTab = document.querySelector('.tab-pane.active');
   if (activeTab && activeTab.id === 'dashboard-tab') {
     refreshDashboard();
@@ -152,10 +158,10 @@ function toggleTheme() {
  * Fetch fresh data cache from the backend API
  */
 export async function reloadStateCache() {
+  if (!localStorage.getItem('auth_token')) return false;
+
   try {
     state.leads = await API.getAllLeads();
-    
-    // Update API status indicators to online
     apiStatusIndicator.className = 'status-indicator online';
     apiStatusText.textContent = 'API Connected';
     return true;
@@ -168,10 +174,51 @@ export async function reloadStateCache() {
 }
 
 /**
+ * Perform login verification
+ */
+async function handleLoginSubmit(event) {
+  event.preventDefault();
+  loginErrorMsg.classList.add('hidden');
+  
+  const username = loginUsernameInput.value.trim();
+  const password = loginPasswordInput.value;
+
+  try {
+    const res = await API.login(username, password);
+    localStorage.setItem('auth_token', res.access_token);
+    
+    // Hide overlay, display logout, pull cache, initialize app content
+    loginOverlay.classList.add('hidden');
+    logoutBtn.style.display = 'block';
+    
+    showToast('Login successful. Welcome back!', 'success');
+    
+    await reloadStateCache();
+    initDashboard();
+    initCRUD();
+    initTriage();
+    initABTest();
+    refreshDashboard();
+  } catch (error) {
+    console.error('Login failed:', error);
+    loginErrorText.textContent = error.message || 'Invalid credentials';
+    loginErrorMsg.classList.remove('hidden');
+  }
+}
+
+/**
+ * Log out user
+ */
+function handleLogout() {
+  localStorage.removeItem('auth_token');
+  showToast('Logged out successfully.', 'info');
+  window.location.reload();
+}
+
+/**
  * Initialize all features on load
  */
 async function initApp() {
-  // Theme check
   initTheme();
   themeToggleBtn.addEventListener('click', toggleTheme);
 
@@ -185,6 +232,8 @@ async function initApp() {
 
   // Setup manual refresh button
   refreshAllBtn.addEventListener('click', async () => {
+    if (!localStorage.getItem('auth_token')) return;
+
     refreshAllBtn.disabled = true;
     const icon = refreshAllBtn.querySelector('i');
     icon.classList.add('fa-spin');
@@ -193,31 +242,43 @@ async function initApp() {
     if (success) {
       showToast('Successfully refreshed data cache.', 'success');
       const activeTabId = document.querySelector('.tab-pane.active').id;
-      switchTab(activeTabId); // force reload active page contents
+      switchTab(activeTabId);
     } else {
-      showToast('Could not fetch fresh data. Please verify your FastAPI backend is running.', 'error');
+      showToast('Could not fetch fresh data.', 'error');
     }
     
     icon.classList.remove('fa-spin');
     refreshAllBtn.disabled = false;
   });
 
-  // Pull initial data
-  const apiUp = await reloadStateCache();
-  if (!apiUp) {
-    showToast('Unable to connect to the FastAPI server at localhost:8000. Is it running?', 'error');
+  // Setup Logout button
+  logoutBtn.addEventListener('click', handleLogout);
+
+  // Setup Login Form submission
+  loginForm.addEventListener('submit', handleLoginSubmit);
+
+  // Check login state
+  const token = localStorage.getItem('auth_token');
+  if (token) {
+    loginOverlay.classList.add('hidden');
+    logoutBtn.style.display = 'block';
+    
+    const apiUp = await reloadStateCache();
+    if (apiUp) {
+      initDashboard();
+      initCRUD();
+      initTriage();
+      initABTest();
+      refreshDashboard();
+    } else {
+      showToast('Backend API is currently offline. Verification pending.', 'error');
+    }
+  } else {
+    loginOverlay.classList.remove('hidden');
+    logoutBtn.style.display = 'none';
   }
 
-  // Initialize subcomponents
-  initDashboard();
-  initCRUD();
-  initTriage();
-  initABTest();
-
-  // Initial trigger for the active dashboard tab
-  refreshDashboard();
-
-  // Periodically check API connection in background (every 10 seconds)
+  // Periodically check API connection
   setInterval(async () => {
     const alive = await API.checkHealth();
     if (alive) {
@@ -230,5 +291,4 @@ async function initApp() {
   }, 10000);
 }
 
-// Kickstart
 document.addEventListener('DOMContentLoaded', initApp);

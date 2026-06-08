@@ -44,8 +44,14 @@ def client(db_engine):
         finally:
             db.close()
 
+    from src.api.dependencies import get_current_user
+    from src.models.user import UserORM
+
     app = create_app()
     app.dependency_overrides[get_db] = override_get_db
+    app.dependency_overrides[get_current_user] = lambda: UserORM(
+        id=1, username="test_admin", email="test@test.com"
+    )
 
     with TestClient(app, raise_server_exceptions=False) as c:
         yield c
