@@ -30,13 +30,14 @@ services:
         condition: service_healthy
     restart: on-failure
 
-  # ── FastAPI backend ───────────────────────────────────────────────────────
+  # ── FastAPI backend & Web CRM Dashboard ───────────────────────────────────
   api:
     build: .
     restart: unless-stopped
     environment:
       DATABASE_URL: postgresql://academyops:academyops@db:5432/academyops
       DEBUG: "false"
+      SECRET_KEY: academyops_production_key_random_abc_123 # Example security key override
     ports:
       - "8000:8000"
     depends_on:
@@ -44,22 +45,6 @@ services:
         condition: service_healthy
       init:
         condition: service_completed_successfully
-
-  # ── Streamlit dashboard ───────────────────────────────────────────────────
-  dashboard:
-    build: .
-    command: >
-      streamlit run src/dashboard/app.py
-      --server.port 8501
-      --server.address 0.0.0.0
-      --logger.level error
-    restart: unless-stopped
-    environment:
-      API_BASE_URL: http://api:8000/api/v1
-    ports:
-      - "8501:8501"
-    depends_on:
-      - api
 
 volumes:
   postgres_data:

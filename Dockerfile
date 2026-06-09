@@ -30,6 +30,9 @@ COPY --from=builder /install /usr/local
 # Copy application source
 COPY src/       ./src/
 COPY scripts/   ./scripts/
+COPY frontend/  ./frontend/
+COPY alembic/   ./alembic/
+COPY alembic.ini .
 COPY pyproject.toml .
 
 # Non-root user for security
