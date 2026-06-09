@@ -1,17 +1,15 @@
 # src/classifier/engine.py
-#
-# Rule-based intent classifier for inbound lead messages.
-# Each intent has a set of keyword fragments.  The message is lowercased and
-# checked for substring matches; the intent with the most hits wins.
-# Ties and zero-match messages fall back to "other".
 
 from __future__ import annotations
 
+import json
+import os
 from dataclasses import dataclass
+import requests
 
-# ---------------------------------------------------------------------------
-# Intent taxonomy
-# ---------------------------------------------------------------------------
+from src.utils.logger import logger
+
+# ── Fallback Taxonomy & Maps ──────────────────────────────────────────────────
 
 INTENTS = ["fees", "timing", "eligibility", "not_interested", "other"]
 
@@ -40,16 +38,12 @@ _KEYWORDS: dict[str, list[str]] = {
     ],
 }
 
-# ---------------------------------------------------------------------------
-# Stage and reply mapping
-# ---------------------------------------------------------------------------
-
 _STAGE_MAP: dict[str, str] = {
-    "fees":          "Qualified",
-    "timing":        "Qualified",
-    "eligibility":   "Qualified",
+    "fees":           "Qualified",
+    "timing":         "Qualified",
+    "eligibility":    "Qualified",
     "not_interested": "Lost",
-    "other":         "",          # caller uses current lead stage
+    "other":          "",          # keeps current lead stage
 }
 
 _REPLY_MAP: dict[str, str] = {
@@ -79,9 +73,7 @@ _REPLY_MAP: dict[str, str] = {
     ),
 }
 
-# ---------------------------------------------------------------------------
-# Result type
-# ---------------------------------------------------------------------------
+# ── Return Struct ─────────────────────────────────────────────────────────────
 
 @dataclass
 class ClassificationResult:
@@ -90,24 +82,12 @@ class ClassificationResult:
     reply: str
 
 
-# ---------------------------------------------------------------------------
-# Public API
-# ---------------------------------------------------------------------------
+# ── Classifier Engines ────────────────────────────────────────────────────────
 
-def classify(message: str, current_stage: str = "") -> ClassificationResult:
-    """Classify *message* and return a ClassificationResult.
-
-    Args:
-        message: Raw text from the lead.
-        current_stage: The lead's current pipeline stage.  Used as the
-            suggested_stage when the intent is "other".
-
-    Returns:
-        A ClassificationResult with intent, suggested_stage, and reply.
-    """
+def _classify_rules(message: str, current_stage: str = "") -> ClassificationResult:
+    """Fallback keyword substring matching engine."""
     lowered = message.lower()
 
-    # Count keyword hits per intent
     scores: dict[str, int] = {intent: 0 for intent in INTENTS if intent != "other"}
     for intent, keywords in _KEYWORDS.items():
         for kw in keywords:
@@ -129,3 +109,80 @@ def classify(message: str, current_stage: str = "") -> ClassificationResult:
         suggested_stage=suggested_stage,
         reply=reply,
     )
+
+
+def _classify_gemini(message: str, current_stage: str = "") -> ClassificationResult:
+    """Query Google Gemini API for structured message categorization."""
+    api_key = os.getenv("GEMINI_API_KEY", "")
+    if not api_key:
+        raise ValueError("Missing GEMINI_API_KEY environment variable.")
+
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={api_key}"
+    
+    prompt = f"""You are an AI CRM assistant for EasySkill Career Academy. Analyze the prospective student's message and return a JSON object.
+
+Allowed intents:
+- "fees": questions about costs, scholarships, installments, EMI. (suggested_stage: "Qualified")
+- "timing": questions about start dates, batches, class timings. (suggested_stage: "Qualified")
+- "eligibility": questions about qualifications, requirements, prerequisites. (suggested_stage: "Qualified")
+- "not_interested": user wants to unsubscribe, stop, or opt-out. (suggested_stage: "Lost")
+- "other": general nonsense, greetings, or other topics. (suggested_stage: "{current_stage}")
+
+Lead Message: "{message}"
+Current Stage: "{current_stage}"
+
+Output a JSON object exactly matching this structure:
+{{
+  "intent": "fees" | "timing" | "eligibility" | "not_interested" | "other",
+  "suggested_stage": "Qualified" | "Lost" | "{current_stage}",
+  "reply": "A polite, custom reply addressing their specific input under 80 words."
+}}"""
+
+    payload = {
+        "contents": [{
+            "parts": [{
+                "text": prompt
+            }]
+        }],
+        "generationConfig": {
+            "responseMimeType": "application/json"
+        }
+    }
+
+    response = requests.post(url, json=payload, timeout=8)
+    response.raise_for_status()
+    
+    result_data = response.json()
+    content_text = result_data["candidates"][0]["content"]["parts"][0]["text"].strip()
+    parsed = json.loads(content_text)
+
+    intent = parsed.get("intent", "other")
+    if intent not in INTENTS:
+        intent = "other"
+
+    suggested_stage = parsed.get("suggested_stage") or current_stage
+    reply = parsed.get("reply") or _REPLY_MAP[intent]
+
+    return ClassificationResult(
+        intent=intent,
+        suggested_stage=suggested_stage,
+        reply=reply,
+    )
+
+
+# ── Public Classification Interface ───────────────────────────────────────────
+
+def classify(message: str, current_stage: str = "") -> ClassificationResult:
+    """Classify lead message using Gemini LLM if configured, else fallback to keywords."""
+    if not message.strip():
+        # Edge case: empty string
+        return _classify_rules("", current_stage)
+
+    if os.getenv("GEMINI_API_KEY"):
+        try:
+            return _classify_gemini(message, current_stage)
+        except Exception as e:
+            logger.warning(f"Gemini triage failed: {e}. Falling back to rule-based engine.")
+            return _classify_rules(message, current_stage)
+    else:
+        return _classify_rules(message, current_stage)

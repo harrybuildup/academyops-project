@@ -97,10 +97,10 @@ def seed() -> None:
             for _ in range(count):
                 db.add(_lead(stage))
             total += count
-            print(f"  {stage:<12} → {count} leads")
+            print(f"  {stage:<12} -> {count} leads")
 
         db.commit()
-        print(f"\n✅  Seeded {total} leads.")
+        print(f"\n[SUCCESS] Seeded {total} leads.")
     finally:
         db.close()
 

@@ -1,15 +1,25 @@
 # src/database/schemas.py
 
-from src.database.connections import Base, get_engine, get_session_factory
+import os
+from pathlib import Path
+from alembic.config import Config
+from alembic import command
+
+from src.database.connections import get_session_factory
 
 
 def create_tables() -> None:
-    """Issue CREATE TABLE IF NOT EXISTS for every SQLAlchemy-mapped model."""
-    import src.models.lead  # noqa: F401
-    import src.models.user  # noqa: F401
+    """Issue Alembic upgrade to generate and keep DB tables up to date."""
+    project_root = Path(__file__).resolve().parent.parent.parent
+    ini_path = project_root / "alembic.ini"
     
-    engine = get_engine()
-    Base.metadata.create_all(bind=engine)
+    # Setup configuration matching local path structures
+    alembic_cfg = Config(str(ini_path))
+    alembic_cfg.set_main_option("script_location", str(project_root / "alembic"))
+    
+    # Programmatically run migrations
+    print("-> Running database migrations via Alembic...")
+    command.upgrade(alembic_cfg, "head")
     
     # Auto-seed a default admin user if none exist in the DB
     from src.models.user import UserORM

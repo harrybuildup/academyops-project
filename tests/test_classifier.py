@@ -141,3 +141,42 @@ def test_response_always_has_all_fields(client):
     assert "intent" in body
     assert "suggested_stage" in body
     assert "reply" in body
+
+
+# ── Gemini Mock Tests ─────────────────────────────────────────────────────────
+
+from unittest.mock import patch, MagicMock
+
+def test_gemini_classification_success():
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {
+        "candidates": [{
+            "content": {
+                "parts": [{
+                    "text": '{"intent": "fees", "suggested_stage": "Qualified", "reply": "Gemini: Fee details..."}'
+                }]
+            }
+        }]
+    }
+    
+    with patch("requests.post", return_value=mock_resp) as mock_post:
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "dummy_key"}):
+            res = classify("What are the costs?", current_stage="New")
+            
+            assert res.intent == "fees"
+            assert res.suggested_stage == "Qualified"
+            assert res.reply == "Gemini: Fee details..."
+            mock_post.assert_called_once()
+
+
+def test_gemini_classification_fallback_on_error():
+    with patch("requests.post", side_effect=Exception("API Error")) as mock_post:
+        with patch.dict("os.environ", {"GEMINI_API_KEY": "dummy_key"}):
+            # Should gracefully fall back to keyword engine on error
+            res = classify("What are the costs?", current_stage="New")
+            
+            assert res.intent == "fees"
+            assert res.suggested_stage == "Qualified"
+            assert "Thanks for asking" in res.reply
+            mock_post.assert_called_once()
+
