@@ -126,6 +126,16 @@ export const API = {
   },
 
   /**
+   * Update all details of an existing lead
+   */
+  async updateLead(id, leadData) {
+    return request(`/leads/${id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(leadData)
+    });
+  },
+
+  /**
    * Delete a lead record
    */
   async deleteLead(id) {

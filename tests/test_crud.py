@@ -5,7 +5,7 @@ import pytest
 from src.api import crud
 from src.models.errors import DuplicatePhoneError, LeadNotFoundError
 from src.models.lead import LeadStage
-from src.schemas.lead import LeadCreate
+from src.schemas.lead import LeadCreate, LeadUpdate
 
 
 def _payload(**overrides) -> LeadCreate:
@@ -96,3 +96,22 @@ def test_delete_lead_success(db_session):
 def test_delete_lead_not_found_raises(db_session):
     with pytest.raises(LeadNotFoundError):
         crud.delete_lead(db_session, 9999)
+
+
+# --- update_lead ---
+
+def test_update_lead_success(db_session):
+    lead = crud.create_lead(db_session, _payload(phone="5550070"))
+    update_data = LeadUpdate(name="Alice Updated", phone="5550071", notes="New notes")
+    updated = crud.update_lead(db_session, lead.id, update_data)
+    assert updated.name == "Alice Updated"
+    assert updated.phone == "5550071"
+    assert updated.notes == "New notes"
+
+
+def test_update_lead_duplicate_phone_raises(db_session):
+    crud.create_lead(db_session, _payload(name="Lead1", phone="5550080"))
+    lead2 = crud.create_lead(db_session, _payload(name="Lead2", phone="5550081"))
+    update_data = LeadUpdate(phone="5550080")
+    with pytest.raises(DuplicatePhoneError):
+        crud.update_lead(db_session, lead2.id, update_data)

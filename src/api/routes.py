@@ -14,7 +14,7 @@ from src.database.connections import get_db
 from src.api.dependencies import get_current_user
 from src.models.user import UserORM
 from src.utils.auth import verify_password, create_access_token, hash_password
-from src.schemas.lead import LeadCreate, LeadListResponse, LeadResponse, LeadStageUpdate
+from src.schemas.lead import LeadCreate, LeadListResponse, LeadResponse, LeadStageUpdate, LeadUpdate
 from src.schemas.message import MessageRequest, MessageResponse
 from src.schemas.user import UserRegister, UserLogin, TokenResponse
 
@@ -126,6 +126,16 @@ def update_stage(
     current_user: UserORM = Depends(get_current_user),
 ):
     return LeadResponse.model_validate(crud.update_lead_stage(db, lead_id, payload.stage))
+
+
+@router.patch("/leads/{lead_id}", response_model=LeadResponse, summary="Update lead details")
+def update_lead(
+    lead_id: int,
+    payload: LeadUpdate,
+    db: Session = Depends(get_db),
+    current_user: UserORM = Depends(get_current_user),
+):
+    return LeadResponse.model_validate(crud.update_lead(db, lead_id, payload))
 
 
 @router.delete("/leads/{lead_id}", status_code=status.HTTP_204_NO_CONTENT, summary="Delete a lead")

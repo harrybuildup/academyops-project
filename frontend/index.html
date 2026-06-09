@@ -49,6 +49,10 @@
           <i class="fa-solid fa-flask-vial"></i>
           <span>A/B Testing</span>
         </button>
+        <button class="nav-item" data-tab="metrics-tab">
+          <i class="fa-solid fa-chart-pie"></i>
+          <span>Advanced Metrics</span>
+        </button>
       </nav>
       
       <div class="sidebar-footer">
@@ -278,9 +282,12 @@
                   <p id="inspector-notes-text" class="notes-content">No notes recorded.</p>
                 </div>
 
-                <div class="inspector-actions">
-                  <button id="inspector-delete-btn" class="btn btn-danger btn-block">
-                    <i class="fa-solid fa-trash-can"></i> Delete Lead Record
+                <div class="inspector-actions" style="display: flex; gap: 12px;">
+                  <button id="inspector-edit-btn" class="btn btn-primary" style="flex: 1;">
+                    <i class="fa-solid fa-pen-to-square"></i> Edit Details
+                  </button>
+                  <button id="inspector-delete-btn" class="btn btn-danger" style="flex: 1;">
+                    <i class="fa-solid fa-trash-can"></i> Delete
                   </button>
                 </div>
               </div>
@@ -496,6 +503,59 @@
           </div>
         </section>
 
+        <!-- Tab 5: Advanced Metrics -->
+        <section id="metrics-tab" class="tab-pane">
+          <!-- KPI Cards Grid -->
+          <div class="kpi-grid">
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon icon-blue"><i class="fa-solid fa-clock"></i></div>
+              <div class="kpi-info">
+                <h3>Avg. Days to Enroll</h3>
+                <span id="kpi-avg-enroll-days" class="kpi-value">-</span>
+              </div>
+            </div>
+            
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon icon-orange"><i class="fa-solid fa-hourglass-half"></i></div>
+              <div class="kpi-info">
+                <h3>Stale Leads (&gt;7 Days)</h3>
+                <span id="kpi-stale-leads" class="kpi-value">-</span>
+              </div>
+            </div>
+            
+            <div class="glass-card kpi-card">
+              <div class="kpi-icon icon-green"><i class="fa-solid fa-chart-line"></i></div>
+              <div class="kpi-info">
+                <h3>Lead Growth Rate</h3>
+                <span id="kpi-lead-growth" class="kpi-value">-</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Charts Section -->
+          <div class="charts-grid">
+            <div class="glass-card chart-card">
+              <div class="card-header">
+                <h3>Lead Inflow Velocity</h3>
+                <p>Growth trend of total leads created over time</p>
+              </div>
+              <div class="chart-container">
+                <canvas id="leadInflowChart"></canvas>
+              </div>
+            </div>
+            
+            <div class="glass-card chart-card">
+              <div class="card-header">
+                <h3>Lead Aging per Stage</h3>
+                <p>Average days active leads have remained in their current stage</p>
+              </div>
+              <div class="chart-container">
+                <canvas id="leadAgingChart"></canvas>
+              </div>
+            </div>
+          </div>
+        </section>
+
       </div>
     </main>
 
@@ -552,6 +612,64 @@
         <div class="modal-footer">
           <button type="button" id="cancel-modal-btn" class="btn btn-secondary">Cancel</button>
           <button type="submit" class="btn btn-primary">Save Lead</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Lead Modal -->
+  <div id="edit-lead-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card">
+      <div class="modal-header">
+        <h3>Edit Lead Details</h3>
+        <button id="edit-close-modal-btn" class="close-btn">&times;</button>
+      </div>
+      <form id="edit-lead-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="edit-lead-name">Full Name *</label>
+            <input type="text" id="edit-lead-name" class="form-control" required placeholder="Jane Doe">
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-lead-phone">Phone Number *</label>
+            <input type="tel" id="edit-lead-phone" class="form-control" required placeholder="09112345678">
+          </div>
+          
+          <div class="form-group">
+            <label for="edit-lead-source-select">Source *</label>
+            <select id="edit-lead-source-select" class="form-control" required>
+              <option value="Google">Google</option>
+              <option value="Facebook">Facebook</option>
+              <option value="Email">Email</option>
+              <option value="Direct">Direct</option>
+              <option value="Referral">Referral</option>
+              <option value="LinkedIn">LinkedIn</option>
+              <option value="Website">Website</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="edit-lead-stage-select">Stage *</label>
+            <select id="edit-lead-stage-select" class="form-control" required>
+              <option value="New">New</option>
+              <option value="Contacted">Contacted</option>
+              <option value="Qualified">Qualified</option>
+              <option value="Demo">Demo</option>
+              <option value="Enrolled">Enrolled</option>
+              <option value="Lost">Lost</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="edit-lead-notes">Notes</label>
+          <textarea id="edit-lead-notes" class="form-control" rows="3" placeholder="Additional details..."></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="edit-cancel-modal-btn" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Save Changes</button>
         </div>
       </form>
     </div>

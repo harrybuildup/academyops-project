@@ -27,6 +27,12 @@ const inspectorSource = document.getElementById('inspector-source');
 const inspectorStageSelect = document.getElementById('inspector-stage-select');
 const inspectorNotesText = document.getElementById('inspector-notes-text');
 const inspectorDeleteBtn = document.getElementById('inspector-delete-btn');
+const inspectorEditBtn = document.getElementById('inspector-edit-btn');
+
+const editLeadModal = document.getElementById('edit-lead-modal');
+const editCloseModalBtn = document.getElementById('edit-close-modal-btn');
+const editCancelModalBtn = document.getElementById('edit-cancel-modal-btn');
+const editLeadForm = document.getElementById('edit-lead-form');
 
 // Local pagination state
 let currentPage = 1;
@@ -77,6 +83,36 @@ export function initCRUD() {
 
   // Lead delete record button
   inspectorDeleteBtn.addEventListener('click', handleDeleteLead);
+
+  // Edit modal bindings
+  inspectorEditBtn.addEventListener('click', () => {
+    console.log('[DEBUG] Edit Details clicked. state.selectedLeadId:', state.selectedLeadId);
+    if (!state.selectedLeadId) {
+      console.warn('[DEBUG] No lead selected.');
+      return;
+    }
+    const lead = state.leads.find(l => l.id === state.selectedLeadId);
+    console.log('[DEBUG] Found lead details:', lead);
+    if (!lead) {
+      console.warn('[DEBUG] Selected lead ID not found in state cache.');
+      return;
+    }
+
+    // Prefill form
+    document.getElementById('edit-lead-name').value = lead.name;
+    document.getElementById('edit-lead-phone').value = lead.phone;
+    document.getElementById('edit-lead-source-select').value = lead.source || 'Direct';
+    document.getElementById('edit-lead-stage-select').value = lead.stage;
+    document.getElementById('edit-lead-notes').value = lead.notes || '';
+
+    editLeadModal.classList.remove('hidden');
+    console.log('[DEBUG] Opened editLeadModal. Classes:', editLeadModal.className);
+  });
+
+  const closeEditModal = () => editLeadModal.classList.add('hidden');
+  editCloseModalBtn.addEventListener('click', closeEditModal);
+  editCancelModalBtn.addEventListener('click', closeEditModal);
+  editLeadForm.addEventListener('submit', handleEditLeadSubmit);
 }
 
 /**
@@ -245,6 +281,34 @@ async function handleAddLeadSubmit(event) {
   } catch (error) {
     console.error('Error creating lead:', error);
     showToast(error.message || 'Failed to create lead. Check logs.', 'error');
+  }
+}
+
+/**
+ * Handle edit lead record form submission
+ */
+async function handleEditLeadSubmit(event) {
+  event.preventDefault();
+  if (!state.selectedLeadId) return;
+
+  const name = document.getElementById('edit-lead-name').value.trim();
+  const phone = document.getElementById('edit-lead-phone').value.trim();
+  const source = document.getElementById('edit-lead-source-select').value;
+  const stage = document.getElementById('edit-lead-stage-select').value;
+  const notes = document.getElementById('edit-lead-notes').value.trim();
+
+  try {
+    const updated = await API.updateLead(state.selectedLeadId, { name, phone, source, stage, notes });
+    
+    editLeadModal.classList.add('hidden');
+    showToast(`Lead "${updated.name}" updated successfully!`, 'success');
+    
+    await reloadStateCache();
+    applySearchAndFilter();
+    updateInspector();
+  } catch (error) {
+    console.error('Error editing lead:', error);
+    showToast(error.message || 'Failed to update lead. Check logs.', 'error');
   }
 }
 

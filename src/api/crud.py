@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 
 from src.models.errors import DuplicatePhoneError, LeadNotFoundError
 from src.models.lead import LeadORM, LeadStage
-from src.schemas.lead import LeadCreate
+from src.schemas.lead import LeadCreate, LeadUpdate
 from src.utils.logger import logger
 
 
@@ -68,6 +68,35 @@ def update_lead_stage(db: Session, lead_id: int, new_stage: LeadStage) -> LeadOR
     db.refresh(lead)
     logger.info(f"Lead stage updated: id={lead_id} stage={new_stage.value!r}")
     return lead
+
+
+def update_lead(db: Session, lead_id: int, payload: LeadUpdate) -> LeadORM:
+    lead = get_lead(db, lead_id)
+    if payload.name is not None:
+        lead.name = payload.name
+    if payload.phone is not None:
+        if payload.phone != lead.phone:
+            existing = db.query(LeadORM).filter(LeadORM.phone == payload.phone).first()
+            if existing:
+                logger.error(f"Duplicate phone on update: phone={payload.phone!r}")
+                raise DuplicatePhoneError(f"A lead with phone '{payload.phone}' already exists.")
+        lead.phone = payload.phone
+    if payload.source is not None:
+        lead.source = payload.source
+    if payload.stage is not None:
+        lead.stage = payload.stage.value
+    if payload.notes is not None:
+        lead.notes = payload.notes or ""
+
+    try:
+        db.commit()
+        db.refresh(lead)
+        logger.info(f"Lead updated: id={lead_id} name={lead.name!r}")
+        return lead
+    except IntegrityError:
+        db.rollback()
+        logger.error(f"Duplicate phone on update integrity error: phone={payload.phone!r}")
+        raise DuplicatePhoneError(f"A lead with phone '{payload.phone}' already exists.")
 
 
 def delete_lead(db: Session, lead_id: int) -> None:

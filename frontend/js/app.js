@@ -5,6 +5,7 @@ import { initDashboard, refreshDashboard } from './dashboard.js';
 import { initCRUD, refreshCRUD } from './crud.js';
 import { initTriage, refreshTriage } from './triage.js';
 import { initABTest, refreshABTest } from './ab_test.js';
+import { initMetrics, refreshMetrics } from './metrics.js';
 
 // Global Application State
 export const state = {
@@ -50,6 +51,10 @@ const tabMetadata = {
   'abtest-tab': {
     title: 'A/B Hypothesis Testing',
     subtitle: 'Evaluate enrollment performance differences between sources'
+  },
+  'metrics-tab': {
+    title: 'Advanced Metrics',
+    subtitle: 'Deeper analytical views and lead performance trends'
   }
 };
 
@@ -116,6 +121,8 @@ function switchTab(tabId) {
     refreshTriage();
   } else if (tabId === 'abtest-tab') {
     refreshABTest();
+  } else if (tabId === 'metrics-tab') {
+    refreshMetrics();
   }
 }
 
@@ -151,6 +158,8 @@ function toggleTheme() {
   const activeTab = document.querySelector('.tab-pane.active');
   if (activeTab && activeTab.id === 'dashboard-tab') {
     refreshDashboard();
+  } else if (activeTab && activeTab.id === 'metrics-tab') {
+    refreshMetrics();
   }
 }
 
@@ -198,6 +207,7 @@ async function handleLoginSubmit(event) {
     initCRUD();
     initTriage();
     initABTest();
+    initMetrics();
     refreshDashboard();
   } catch (error) {
     console.error('Login failed:', error);
@@ -269,6 +279,7 @@ async function initApp() {
       initCRUD();
       initTriage();
       initABTest();
+      initMetrics();
       refreshDashboard();
     } else {
       showToast('Backend API is currently offline. Verification pending.', 'error');

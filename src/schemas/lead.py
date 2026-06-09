@@ -50,3 +50,12 @@ class LeadListResponse(BaseModel):
 
     meta: Meta
     data: list[LeadResponse]
+
+
+class LeadUpdate(BaseModel):
+    """Body schema for PATCH /api/v1/leads/{id}."""
+    name: Optional[str] = Field(default=None, min_length=1)
+    phone: Optional[str] = Field(default=None, min_length=7)
+    source: Optional[str] = Field(default=None)
+    stage: Optional[LeadStage] = Field(default=None)
+    notes: Optional[str] = Field(default=None)
