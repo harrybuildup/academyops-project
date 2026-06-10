@@ -3,9 +3,11 @@
 import { API } from './api.js';
 import { initDashboard, refreshDashboard } from './dashboard.js';
 import { initCRUD, refreshCRUD } from './crud.js';
+import { initKanban, refreshKanban } from './kanban.js';
 import { initTriage, refreshTriage } from './triage.js';
 import { initABTest, refreshABTest } from './ab_test.js';
 import { initMetrics, refreshMetrics } from './metrics.js';
+import { initTeam, refreshTeam, getTokenPayload } from './team.js';
 
 // Global Application State
 export const state = {
@@ -40,6 +42,10 @@ const tabMetadata = {
     title: 'Pipeline & Analytics',
     subtitle: 'Track prospective students and check sales metrics'
   },
+  'kanban-tab': {
+    title: 'Admissions Kanban Board',
+    subtitle: 'Drag and drop leads to advance their pipeline stages'
+  },
   'leads-tab': {
     title: 'Lead Operations',
     subtitle: 'Create, update, inspect, and manage lead records'
@@ -55,8 +61,27 @@ const tabMetadata = {
   'metrics-tab': {
     title: 'Advanced Metrics',
     subtitle: 'Deeper analytical views and lead performance trends'
+  },
+  'settings-tab': {
+    title: 'Team Settings',
+    subtitle: 'Manage administrative roles and operator status'
   }
 };
+
+/**
+ * Update role-based sidebar tab visibility
+ */
+function updateNavVisibility() {
+  const payload = getTokenPayload();
+  const settingsBtn = document.getElementById('nav-settings-tab');
+  if (settingsBtn) {
+    if (payload && payload.role === 'Admin') {
+      settingsBtn.style.display = 'block';
+    } else {
+      settingsBtn.style.display = 'none';
+    }
+  }
+}
 
 /**
  * Global Toast Alert Notification System
@@ -115,6 +140,8 @@ function switchTab(tabId) {
 
   if (tabId === 'dashboard-tab') {
     refreshDashboard();
+  } else if (tabId === 'kanban-tab') {
+    refreshKanban();
   } else if (tabId === 'leads-tab') {
     refreshCRUD();
   } else if (tabId === 'triage-tab') {
@@ -123,6 +150,8 @@ function switchTab(tabId) {
     refreshABTest();
   } else if (tabId === 'metrics-tab') {
     refreshMetrics();
+  } else if (tabId === 'settings-tab') {
+    refreshTeam();
   }
 }
 
@@ -173,6 +202,27 @@ export async function reloadStateCache() {
     state.leads = await API.getAllLeads();
     apiStatusIndicator.className = 'status-indicator online';
     apiStatusText.textContent = 'API Connected';
+    
+    // Auto-refresh the active tab if it's rendered
+    const activeTab = document.querySelector('.tab-pane.active');
+    if (activeTab) {
+      const tabId = activeTab.id;
+      if (tabId === 'dashboard-tab') {
+        refreshDashboard();
+      } else if (tabId === 'kanban-tab') {
+        refreshKanban();
+      } else if (tabId === 'leads-tab') {
+        refreshCRUD();
+      } else if (tabId === 'triage-tab') {
+        refreshTriage();
+      } else if (tabId === 'abtest-tab') {
+        refreshABTest();
+      } else if (tabId === 'metrics-tab') {
+        refreshMetrics();
+      } else if (tabId === 'settings-tab') {
+        refreshTeam();
+      }
+    }
     return true;
   } catch (error) {
     console.error('API cache update failed:', error);
@@ -181,6 +231,7 @@ export async function reloadStateCache() {
     return false;
   }
 }
+
 
 /**
  * Perform login verification
@@ -205,9 +256,12 @@ async function handleLoginSubmit(event) {
     await reloadStateCache();
     initDashboard();
     initCRUD();
+    initKanban();
+    initTeam();
     initTriage();
     initABTest();
     initMetrics();
+    updateNavVisibility();
     refreshDashboard();
   } catch (error) {
     console.error('Login failed:', error);
@@ -277,9 +331,12 @@ async function initApp() {
     if (apiUp) {
       initDashboard();
       initCRUD();
+      initKanban();
+      initTeam();
       initTriage();
       initABTest();
       initMetrics();
+      updateNavVisibility();
       refreshDashboard();
     } else {
       showToast('Backend API is currently offline. Verification pending.', 'error');

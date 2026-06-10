@@ -17,6 +17,7 @@ class UserORM(Base):
     username = Column(String(50), nullable=False, unique=True, index=True)
     hashed_password = Column(String(255), nullable=False)
     email = Column(String(255), nullable=False, unique=True, index=True)
+    role = Column(String(20), nullable=False, default="Editor")
     is_active = Column(Boolean, nullable=False, default=True)
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
 

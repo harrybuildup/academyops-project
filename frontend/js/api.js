@@ -152,5 +152,32 @@ export const API = {
       method: 'POST',
       body: JSON.stringify({ message })
     });
+  },
+
+  /**
+   * Fetch all registered operators (Admins only)
+   */
+  async getUsers() {
+    return request('/users');
+  },
+
+  /**
+   * Create a new operator account (Admins only)
+   */
+  async createUser(userData) {
+    return request('/users', {
+      method: 'POST',
+      body: JSON.stringify(userData)
+    });
+  },
+
+  /**
+   * Update operator attributes, e.g. role or active status (Admins only)
+   */
+  async updateUser(userId, userData) {
+    return request(`/users/${userId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(userData)
+    });
   }
 };

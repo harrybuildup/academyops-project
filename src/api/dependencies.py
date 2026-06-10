@@ -34,4 +34,20 @@ def get_current_user(
     if user is None:
         raise credentials_exception
         
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User account is deactivated"
+        )
+        
     return user
+
+
+def require_admin(current_user: UserORM = Depends(get_current_user)) -> UserORM:
+    """FastAPI dependency to ensure the logged-in user is an Admin."""
+    if current_user.role != "Admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Only administrators can access this resource"
+        )
+    return current_user

@@ -83,20 +83,11 @@ export function initCRUD() {
 
   // Lead delete record button
   inspectorDeleteBtn.addEventListener('click', handleDeleteLead);
-
   // Edit modal bindings
   inspectorEditBtn.addEventListener('click', () => {
-    console.log('[DEBUG] Edit Details clicked. state.selectedLeadId:', state.selectedLeadId);
-    if (!state.selectedLeadId) {
-      console.warn('[DEBUG] No lead selected.');
-      return;
-    }
+    if (!state.selectedLeadId) return;
     const lead = state.leads.find(l => l.id === state.selectedLeadId);
-    console.log('[DEBUG] Found lead details:', lead);
-    if (!lead) {
-      console.warn('[DEBUG] Selected lead ID not found in state cache.');
-      return;
-    }
+    if (!lead) return;
 
     // Prefill form
     document.getElementById('edit-lead-name').value = lead.name;
@@ -106,9 +97,7 @@ export function initCRUD() {
     document.getElementById('edit-lead-notes').value = lead.notes || '';
 
     editLeadModal.classList.remove('hidden');
-    console.log('[DEBUG] Opened editLeadModal. Classes:', editLeadModal.className);
   });
-
   const closeEditModal = () => editLeadModal.classList.add('hidden');
   editCloseModalBtn.addEventListener('click', closeEditModal);
   editCancelModalBtn.addEventListener('click', closeEditModal);

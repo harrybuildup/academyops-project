@@ -28,15 +28,21 @@ def create_tables() -> None:
     Session = get_session_factory()
     db = Session()
     try:
-        if db.query(UserORM).count() == 0:
+        admin_user = db.query(UserORM).filter(UserORM.username == "admin").first()
+        if not admin_user:
             default_admin = UserORM(
                 username="admin",
                 email="admin@easyskill.com",
-                hashed_password=hash_password("admin123")
+                hashed_password=hash_password("admin123"),
+                role="Admin"
             )
             db.add(default_admin)
             db.commit()
             print("Auto-seeded default admin user (username: admin, password: admin123)")
+        elif admin_user.role != "Admin":
+            admin_user.role = "Admin"
+            db.commit()
+            print("Updated existing admin user role to Admin")
     except Exception as e:
         print(f"Warning: Failed to auto-seed default admin user: {e}")
         db.rollback()

@@ -37,6 +37,10 @@
           <i class="fa-solid fa-chart-line"></i>
           <span>Pipeline & Analytics</span>
         </button>
+        <button class="nav-item" data-tab="kanban-tab">
+          <i class="fa-solid fa-table-columns"></i>
+          <span>Admissions Board</span>
+        </button>
         <button class="nav-item" data-tab="leads-tab">
           <i class="fa-solid fa-users"></i>
           <span>Lead Operations</span>
@@ -52,6 +56,10 @@
         <button class="nav-item" data-tab="metrics-tab">
           <i class="fa-solid fa-chart-pie"></i>
           <span>Advanced Metrics</span>
+        </button>
+        <button class="nav-item" id="nav-settings-tab" data-tab="settings-tab" style="display: none;">
+          <i class="fa-solid fa-user-gear"></i>
+          <span>Team Settings</span>
         </button>
       </nav>
       
@@ -556,6 +564,103 @@
           </div>
         </section>
 
+        <!-- Tab 6: Admissions Kanban Board -->
+        <section id="kanban-tab" class="tab-pane">
+          <div class="kanban-board-wrapper">
+            <div class="kanban-board-container" id="kanban-board">
+              
+              <div class="kanban-column" data-stage="New">
+                <div class="kanban-column-header">
+                  <div class="kanban-title-dot" style="background-color: var(--info);"></div>
+                  <h3>New</h3>
+                  <span class="kanban-count" id="count-New">0</span>
+                </div>
+                <div class="kanban-cards-list" data-stage="New"></div>
+              </div>
+              
+              <div class="kanban-column" data-stage="Contacted">
+                <div class="kanban-column-header">
+                  <div class="kanban-title-dot" style="background-color: var(--warning);"></div>
+                  <h3>Contacted</h3>
+                  <span class="kanban-count" id="count-Contacted">0</span>
+                </div>
+                <div class="kanban-cards-list" data-stage="Contacted"></div>
+              </div>
+              
+              <div class="kanban-column" data-stage="Qualified">
+                <div class="kanban-column-header">
+                  <div class="kanban-title-dot" style="background-color: var(--primary-solid);"></div>
+                  <h3>Qualified</h3>
+                  <span class="kanban-count" id="count-Qualified">0</span>
+                </div>
+                <div class="kanban-cards-list" data-stage="Qualified"></div>
+              </div>
+              
+              <div class="kanban-column" data-stage="Demo">
+                <div class="kanban-column-header">
+                  <div class="kanban-title-dot" style="background-color: #10b981;"></div>
+                  <h3>Demo</h3>
+                  <span class="kanban-count" id="count-Demo">0</span>
+                </div>
+                <div class="kanban-cards-list" data-stage="Demo"></div>
+              </div>
+              
+              <div class="kanban-column" data-stage="Enrolled">
+                <div class="kanban-column-header">
+                  <div class="kanban-title-dot" style="background-color: var(--success);"></div>
+                  <h3>Enrolled</h3>
+                  <span class="kanban-count" id="count-Enrolled">0</span>
+                </div>
+                <div class="kanban-cards-list" data-stage="Enrolled"></div>
+              </div>
+              
+              <div class="kanban-column" data-stage="Lost">
+                <div class="kanban-column-header">
+                  <div class="kanban-title-dot" style="background-color: var(--danger);"></div>
+                  <h3>Lost</h3>
+                  <span class="kanban-count" id="count-Lost">0</span>
+                </div>
+                <div class="kanban-cards-list" data-stage="Lost"></div>
+              </div>
+              
+            </div>
+          </div>
+        </section>
+
+        <!-- Tab 7: Settings & Team Panel -->
+        <section id="settings-tab" class="tab-pane">
+          <div class="glass-card settings-panel">
+            <div class="settings-header">
+              <div class="header-info">
+                <h3>Operator Management</h3>
+                <p>Invite, manage, and assign roles to team members accessing the CRM</p>
+              </div>
+              <button id="add-operator-btn" class="btn btn-primary">
+                <i class="fa-solid fa-user-plus"></i>
+                <span>Add Operator</span>
+              </button>
+            </div>
+            
+            <div class="table-responsive">
+              <table class="leads-table" id="team-table">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Created At</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="team-table-body">
+                  <!-- Operator rows rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
       </div>
     </main>
 
@@ -670,6 +775,46 @@
         <div class="modal-footer">
           <button type="button" id="edit-cancel-modal-btn" class="btn btn-secondary">Cancel</button>
           <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  <!-- Add Operator Modal -->
+  <div id="add-operator-modal" class="modal-overlay hidden">
+    <div class="glass-card modal-card">
+      <div class="modal-header">
+        <h3>Create Operator Account</h3>
+        <button id="close-operator-modal-btn" class="close-btn">&times;</button>
+      </div>
+      <form id="add-operator-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="operator-username">Username *</label>
+            <input type="text" id="operator-username" class="form-control" required placeholder="john_doe">
+          </div>
+          
+          <div class="form-group">
+            <label for="operator-email">Email Address *</label>
+            <input type="email" id="operator-email" class="form-control" required placeholder="john@easyskill.com">
+          </div>
+          
+          <div class="form-group">
+            <label for="operator-password">Password *</label>
+            <input type="password" id="operator-password" class="form-control" required placeholder="Minimum 6 characters">
+          </div>
+
+          <div class="form-group">
+            <label for="operator-role">Role *</label>
+            <select id="operator-role" class="form-control" required>
+              <option value="Viewer">Viewer</option>
+              <option value="Editor" selected>Editor</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="cancel-operator-modal-btn" class="btn btn-secondary">Cancel</button>
+          <button type="submit" class="btn btn-primary">Create Account</button>
         </div>
       </form>
     </div>

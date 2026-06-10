@@ -11,12 +11,12 @@ from sqlalchemy.orm import Session
 from src.api import crud
 from src.classifier.engine import classify
 from src.database.connections import get_db
-from src.api.dependencies import get_current_user
+from src.api.dependencies import get_current_user, require_admin
 from src.models.user import UserORM
 from src.utils.auth import verify_password, create_access_token, hash_password
 from src.schemas.lead import LeadCreate, LeadListResponse, LeadResponse, LeadStageUpdate, LeadUpdate
 from src.schemas.message import MessageRequest, MessageResponse
-from src.schemas.user import UserRegister, UserLogin, TokenResponse
+from src.schemas.user import UserRegister, UserLogin, TokenResponse, UserResponse, UserUpdate
 
 router = APIRouter(prefix="/api/v1", tags=["leads"])
 
@@ -47,7 +47,8 @@ def register_user(payload: UserRegister, db: Session = Depends(get_db)):
     new_user = UserORM(
         username=payload.username,
         email=payload.email,
-        hashed_password=hash_password(payload.password)
+        hashed_password=hash_password(payload.password),
+        role=payload.role
     )
     db.add(new_user)
     db.commit()
@@ -70,7 +71,13 @@ def login(payload: UserLogin, db: Session = Depends(get_db)):
             headers={"WWW-Authenticate": "Bearer"},
         )
     
-    token = create_access_token(data={"sub": user.username})
+    if not user.is_active:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="User account is deactivated"
+        )
+        
+    token = create_access_token(data={"sub": user.username, "role": user.role})
     return TokenResponse(access_token=token, token_type="bearer")
 
 
@@ -171,3 +178,89 @@ def classify_message(
         suggested_stage=result.suggested_stage,
         reply=result.reply,
     )
+
+
+# ── User Operator Management (Admin Only) ───────────────────────────────────
+
+@router.get(
+    "/users",
+    response_model=list[UserResponse],
+    summary="List all operator accounts",
+)
+def list_operators(
+    db: Session = Depends(get_db),
+    admin_user: UserORM = Depends(require_admin)
+):
+    """List all registered operators sorted by creation date."""
+    return db.query(UserORM).order_by(UserORM.created_at.desc()).all()
+
+
+@router.post(
+    "/users",
+    response_model=UserResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create a new operator account",
+)
+def create_operator(
+    payload: UserRegister,
+    db: Session = Depends(get_db),
+    admin_user: UserORM = Depends(require_admin)
+):
+    """Register a new operator user account (Admins only)."""
+    existing_user = db.query(UserORM).filter(
+        (UserORM.username == payload.username) | (UserORM.email == payload.email)
+    ).first()
+    if existing_user:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Username or Email already registered"
+        )
+    
+    new_user = UserORM(
+        username=payload.username,
+        email=payload.email,
+        hashed_password=hash_password(payload.password),
+        role=payload.role
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+
+@router.patch(
+    "/users/{user_id}",
+    response_model=UserResponse,
+    summary="Update operator role or active status",
+)
+def update_operator(
+    user_id: int,
+    payload: UserUpdate,
+    db: Session = Depends(get_db),
+    admin_user: UserORM = Depends(require_admin)
+):
+    """Modify operator parameters like their role or is_active toggle."""
+    user = db.query(UserORM).filter(UserORM.id == user_id).first()
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Operator user not found"
+        )
+        
+    # Prevent self-deactivation
+    if payload.is_active is False and user.id == admin_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="You cannot deactivate your own administrative account"
+        )
+        
+    if payload.role is not None:
+        user.role = payload.role
+        
+    if payload.is_active is not None:
+        user.is_active = payload.is_active
+        
+    db.commit()
+    db.refresh(user)
+    return user
+
