@@ -23,8 +23,9 @@ async function request(endpoint, options = {}) {
   });
 
   if (!response.ok) {
-    // Automatically log out on unauthorized response (401)
-    if (response.status === 401 && !endpoint.includes('/auth/login')) {
+    // Automatically log out and reload on unauthorized response (401)
+    // but NOT for /auth/me (handled by app.js) or /auth/login (handled by login form)
+    if (response.status === 401 && !endpoint.includes('/auth/login') && !endpoint.includes('/auth/me')) {
       localStorage.removeItem('auth_token');
       window.location.reload();
     }
@@ -47,6 +48,13 @@ export const API = {
     } catch {
       return false;
     }
+  },
+
+  /**
+   * Verify the current token is valid (returns user info or throws on 401)
+   */
+  async verifyToken() {
+    return request('/auth/me');
   },
 
   /**
@@ -178,6 +186,37 @@ export const API = {
     return request(`/users/${userId}`, {
       method: 'PATCH',
       body: JSON.stringify(userData)
+    });
+  },
+
+  // ── AI Copilot ─────────────────────────────────────────────────────────
+
+  /**
+   * Get AI-suggested next action for a lead
+   */
+  async suggestAction(leadId) {
+    return request('/copilot/suggest', {
+      method: 'POST',
+      body: JSON.stringify({ lead_id: leadId })
+    });
+  },
+
+  /**
+   * Draft an AI-generated follow-up message for a lead
+   */
+  async draftMessage(leadId, tone = 'professional') {
+    return request('/copilot/draft', {
+      method: 'POST',
+      body: JSON.stringify({ lead_id: leadId, tone })
+    });
+  },
+
+  /**
+   * Score all leads for conversion probability
+   */
+  async scoreLeads() {
+    return request('/copilot/score', {
+      method: 'POST'
     });
   }
 };

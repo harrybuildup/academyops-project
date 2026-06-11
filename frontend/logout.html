@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache">
+  <title>Logging out...</title>
+  <style>
+    body {
+      font-family: Inter, sans-serif;
+      background: #0a0c16;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      flex-direction: column;
+      gap: 16px;
+    }
+    p { color: #8b9cf4; font-size: 18px; }
+  </style>
+</head>
+<body>
+  <p>🔓 Logging you out...</p>
+  <script>
+    // Clear EVERYTHING - localStorage, sessionStorage, all cookies
+    localStorage.clear();
+    sessionStorage.clear();
+    document.cookie.split(";").forEach(c => {
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+    // Redirect to login
+    window.location.replace('/');
+  </script>
+</body>
+</html>

@@ -47,6 +47,37 @@ def create_app() -> FastAPI:
         allow_headers=["*"],
     )
 
+    # No-cache middleware: strips ETag/Last-Modified from requests and adds
+    # Cache-Control: no-store to all responses so browsers never serve stale JS/CSS.
+    from starlette.types import ASGIApp, Receive, Send, Scope
+    from starlette.datastructures import MutableHeaders
+
+    class NoCacheMiddleware:
+        def __init__(self, app: ASGIApp) -> None:
+            self.app = app
+
+        async def __call__(self, scope: Scope, receive: Receive, send: Send) -> None:
+            if scope["type"] == "http":
+                # Strip conditional request headers so server never returns 304
+                headers = dict(scope.get("headers", []))
+                headers.pop(b"if-none-match", None)
+                headers.pop(b"if-modified-since", None)
+                scope["headers"] = list(headers.items())
+
+                async def send_with_no_cache(message):
+                    if message["type"] == "http.response.start":
+                        headers = MutableHeaders(scope=message)
+                        headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+                        headers["Pragma"] = "no-cache"
+                        headers["Expires"] = "0"
+                    await send(message)
+
+                await self.app(scope, receive, send_with_no_cache)
+            else:
+                await self.app(scope, receive, send)
+
+    app.add_middleware(NoCacheMiddleware)
+
     # Serve static frontend files
     from fastapi.staticfiles import StaticFiles
     from pathlib import Path

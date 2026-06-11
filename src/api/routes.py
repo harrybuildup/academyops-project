@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from math import ceil
 from typing import Optional
 
@@ -10,6 +11,7 @@ from sqlalchemy.orm import Session
 
 from src.api import crud
 from src.classifier.engine import classify
+from src.services.copilot import suggest_next_action, draft_message, score_leads
 from src.database.connections import get_db
 from src.api.dependencies import get_current_user, require_admin
 from src.models.user import UserORM
@@ -26,7 +28,25 @@ def health_check():
     return {"status": "healthy", "service": "AcademyOps API"}
 
 
+@router.get("/logout-link", summary="Get logout page URL", include_in_schema=False)
+def logout_redirect():
+    """Redirect helper — returns the logout page URL."""
+    from fastapi.responses import RedirectResponse
+    return RedirectResponse(url="/logout.html", status_code=302)
+
+
 # ── Auth Endpoints ─────────────────────────────────────────────────────────
+
+@router.get(
+    "/auth/me",
+    response_model=UserResponse,
+    summary="Get current authenticated user",
+)
+def get_me(
+    current_user: UserORM = Depends(get_current_user),
+):
+    """Validate token and return the authenticated user's profile."""
+    return current_user
 
 @router.post(
     "/auth/register",
@@ -263,4 +283,84 @@ def update_operator(
     db.commit()
     db.refresh(user)
     return user
+
+
+# ── AI Copilot Endpoints ───────────────────────────────────────────────────
+
+@router.post("/copilot/suggest", summary="AI: Suggest next action for a lead")
+def copilot_suggest(
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: UserORM = Depends(get_current_user),
+):
+    """Use AI to recommend the best next action for a specific lead."""
+    lead_id = payload.get("lead_id")
+    if not lead_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="lead_id is required",
+        )
+    lead = crud.get_lead(db, lead_id)
+
+    now = datetime.now(timezone.utc)
+    created = lead.created_at
+    if created.tzinfo is None:
+        created = created.replace(tzinfo=timezone.utc)
+    lead_age_days = (now - created).days
+
+    result = suggest_next_action(
+        lead_name=lead.name,
+        lead_stage=lead.stage,
+        lead_source=lead.source or "",
+        lead_notes=lead.notes or "",
+        lead_age_days=lead_age_days,
+    )
+    return result
+
+
+@router.post("/copilot/draft", summary="AI: Draft a follow-up message")
+def copilot_draft(
+    payload: dict,
+    db: Session = Depends(get_db),
+    current_user: UserORM = Depends(get_current_user),
+):
+    """Use AI to draft a follow-up message for a specific lead."""
+    lead_id = payload.get("lead_id")
+    if not lead_id:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="lead_id is required",
+        )
+    tone = payload.get("tone", "professional")
+    lead = crud.get_lead(db, lead_id)
+
+    result = draft_message(
+        lead_name=lead.name,
+        lead_stage=lead.stage,
+        lead_source=lead.source or "",
+        lead_notes=lead.notes or "",
+        tone=tone,
+    )
+    return result
+
+
+@router.post("/copilot/score", summary="AI: Score all leads for conversion")
+def copilot_score(
+    db: Session = Depends(get_db),
+    current_user: UserORM = Depends(get_current_user),
+):
+    """Use AI to score all leads for conversion probability."""
+    leads, total = crud.list_leads(db, page=1, limit=1000)
+    leads_data = [
+        {
+            "id": lead.id,
+            "name": lead.name,
+            "stage": lead.stage,
+            "source": lead.source or "",
+            "notes": lead.notes or "",
+            "created_at": lead.created_at.isoformat() if lead.created_at else "",
+        }
+        for lead in leads
+    ]
+    return score_leads(leads_data)
 

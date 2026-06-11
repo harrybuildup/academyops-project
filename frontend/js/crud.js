@@ -1,9 +1,9 @@
 // frontend/js/crud.js
 
-import { state, reloadStateCache, showToast } from './app.js';
-import { API } from './api.js';
 
-// DOM elements
+import { API } from './api.js';
+import { state, reloadStateCache, showToast, registerTab } from './shared.js';
+
 const searchInput = document.getElementById('lead-search-input');
 const addLeadBtn = document.getElementById('add-lead-btn');
 const addLeadModal = document.getElementById('add-lead-modal');
@@ -43,6 +43,7 @@ let filteredList = [];
  * Register CRUD event listeners
  */
 export function initCRUD() {
+  registerTab('leads-tab', refreshCRUD);
   // Search listener
   searchInput.addEventListener('input', () => {
     currentPage = 1;

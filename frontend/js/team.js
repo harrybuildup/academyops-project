@@ -1,7 +1,7 @@
 // frontend/js/team.js
 
 import { API } from './api.js';
-import { showToast } from './app.js';
+import { showToast, registerTab } from './shared.js';
 
 const addOperatorModal = document.getElementById('add-operator-modal');
 const addOperatorBtn = document.getElementById('add-operator-btn');
@@ -30,6 +30,7 @@ export function getTokenPayload() {
  * Initialize Team Panel events
  */
 export function initTeam() {
+  registerTab('settings-tab', refreshTeam);
   const payload = getTokenPayload();
   if (!payload || payload.role !== 'Admin') return;
 

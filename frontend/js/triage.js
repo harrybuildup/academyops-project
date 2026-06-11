@@ -1,6 +1,7 @@
+
 // frontend/js/triage.js
 
-import { state, reloadStateCache, showToast } from './app.js';
+import { state, reloadStateCache, showToast, registerTab } from './shared.js';
 import { API } from './api.js';
 
 // DOM elements
@@ -35,6 +36,7 @@ const PREFILL_SUGGESTIONS = [
  * Initialize Triage tab elements
  */
 export function initTriage() {
+  registerTab('triage-tab', refreshTriage);
   triageClassifyBtn.addEventListener('click', handleClassifyClick);
   triageCopyReplyBtn.addEventListener('click', handleCopyReplyClick);
   triageApplyStageBtn.addEventListener('click', handleApplyStageClick);

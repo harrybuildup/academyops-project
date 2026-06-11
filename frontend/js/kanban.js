@@ -1,12 +1,14 @@
+
 // frontend/js/kanban.js
 
 import { API } from './api.js';
-import { state, showToast, reloadStateCache } from './app.js';
+import { state, showToast, reloadStateCache, registerTab } from './shared.js';
 
 /**
  * Initialize Kanban board listeners
  */
 export function initKanban() {
+  registerTab('kanban-tab', refreshKanban);
   const columns = document.querySelectorAll('.kanban-column');
   
   columns.forEach(column => {

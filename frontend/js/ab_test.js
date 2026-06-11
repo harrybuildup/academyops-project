@@ -1,6 +1,6 @@
 // frontend/js/ab_test.js
 
-import { state, showToast } from './app.js';
+import { state, showToast, registerTab } from './shared.js';
 
 // DOM elements
 const abSource1 = document.getElementById('ab-source-1');
@@ -32,6 +32,7 @@ const abConclusionText = document.getElementById('ab-conclusion-text');
  * Initialize A/B Testing event listeners
  */
 export function initABTest() {
+  registerTab('abtest-tab', refreshABTest);
   abRunBtn.addEventListener('click', runHypothesisTest);
 }
 

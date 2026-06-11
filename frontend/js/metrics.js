@@ -1,6 +1,6 @@
 // frontend/js/metrics.js
 
-import { state } from './app.js';
+import { state, registerTab } from './shared.js';
 
 // DOM elements for KPIs
 const kpiAvgEnrollDays = document.getElementById('kpi-avg-enroll-days');
@@ -15,7 +15,7 @@ let agingChartInstance = null;
  * Initialize metrics tab event listeners (if any)
  */
 export function initMetrics() {
-  // Currently read-only dashboard, so no inputs to bind
+  registerTab('metrics-tab', refreshMetrics);
 }
 
 /**

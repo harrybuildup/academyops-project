@@ -1,6 +1,6 @@
 // frontend/js/dashboard.js
 
-import { state } from './app.js';
+import { state, registerTab } from './shared.js';
 import { API } from './api.js';
 
 // DOM elements
@@ -24,6 +24,8 @@ const STAGE_ORDER = ["New", "Contacted", "Qualified", "Demo", "Enrolled"];
  * Initialize Dashboard DOM event listeners and default filter settings
  */
 export function initDashboard() {
+  registerTab('dashboard-tab', refreshDashboard);
+
   // Setup filter event listeners
   filterSource.addEventListener('change', renderDashboardData);
   filterDateStart.addEventListener('change', renderDashboardData);
