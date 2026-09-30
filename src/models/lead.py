@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from enum import Enum
 
-from sqlalchemy import Column, DateTime, Integer, String, Text
+from sqlalchemy import Column, DateTime, Integer, JSON, String, Text
 from sqlalchemy.sql import func
 
 from src.database.connections import Base
@@ -30,6 +30,7 @@ class LeadORM(Base):
     source = Column(String(100), nullable=True)
     stage = Column(String(50), nullable=False, default=LeadStage.NEW.value, index=True)
     notes = Column(Text, nullable=True)
+    custom_fields = Column(JSON, default=dict, server_default='{}')
     created_at = Column(DateTime, server_default=func.now(), nullable=False)
     updated_at = Column(DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
 

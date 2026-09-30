@@ -12,7 +12,7 @@ Stop with Ctrl+C.
 import subprocess
 import sys
 
-try:
+try:        
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
@@ -49,4 +49,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
- 

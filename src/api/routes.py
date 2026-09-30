@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from datetime import datetime, timezone
 from math import ceil
 from typing import Optional
@@ -16,8 +17,10 @@ from src.database.connections import get_db
 from src.api.dependencies import get_current_user, require_admin
 from src.models.user import UserORM
 from src.utils.auth import verify_password, create_access_token, hash_password
+from src.models.custom_field import CustomFieldDefinition
 from src.schemas.lead import LeadCreate, LeadListResponse, LeadResponse, LeadStageUpdate, LeadUpdate
 from src.schemas.message import MessageRequest, MessageResponse
+from src.schemas.custom_field import CustomFieldCreate, CustomFieldUpdate, CustomFieldResponse
 from src.schemas.user import UserRegister, UserLogin, TokenResponse, UserResponse, UserUpdate
 
 router = APIRouter(prefix="/api/v1", tags=["leads"])
@@ -364,3 +367,128 @@ def copilot_score(
     ]
     return score_leads(leads_data)
 
+
+# ── Custom Field Definition Endpoints ──────────────────────────────────────
+
+@router.get(
+    "/custom-fields",
+    response_model=list[CustomFieldResponse],
+    summary="List all custom field definitions",
+)
+def list_custom_fields(
+    db: Session = Depends(get_db),
+    admin_user: UserORM = Depends(require_admin),
+):
+    """List ALL custom field definitions (active + inactive). Admin only."""
+    return db.query(CustomFieldDefinition).order_by(CustomFieldDefinition.display_order).all()
+
+
+@router.get(
+    "/custom-fields/active",
+    response_model=list[CustomFieldResponse],
+    summary="List active custom field definitions",
+)
+def list_active_custom_fields(
+    db: Session = Depends(get_db),
+    current_user: UserORM = Depends(get_current_user),
+):
+    """List only active custom field definitions ordered by display_order."""
+    return (
+        db.query(CustomFieldDefinition)
+        .filter(CustomFieldDefinition.is_active == True)  # noqa: E712
+        .order_by(CustomFieldDefinition.display_order)
+        .all()
+    )
+
+
+@router.post(
+    "/custom-fields",
+    response_model=CustomFieldResponse,
+    status_code=status.HTTP_201_CREATED,
+    summary="Create a custom field definition",
+)
+def create_custom_field(
+    payload: CustomFieldCreate,
+    db: Session = Depends(get_db),
+    admin_user: UserORM = Depends(require_admin),
+):
+    """Create a new custom field definition. Admin only."""
+    field_key = re.sub(r"[^a-z0-9]+", "_", payload.name.lower()).strip("_")
+    existing = (
+        db.query(CustomFieldDefinition)
+        .filter(CustomFieldDefinition.field_key == field_key)
+        .first()
+    )
+    if existing:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=f"A custom field with key '{field_key}' already exists.",
+        )
+    field = CustomFieldDefinition(
+        name=payload.name,
+        field_key=field_key,
+        field_type=payload.field_type,
+        options=payload.options,
+        is_required=payload.is_required,
+        display_order=payload.display_order,
+    )
+    db.add(field)
+    db.commit()
+    db.refresh(field)
+    return field
+
+
+@router.patch(
+    "/custom-fields/{field_id}",
+    response_model=CustomFieldResponse,
+    summary="Update a custom field definition",
+)
+def update_custom_field(
+    field_id: int,
+    payload: CustomFieldUpdate,
+    db: Session = Depends(get_db),
+    admin_user: UserORM = Depends(require_admin),
+):
+    """Update properties of an existing custom field definition. Admin only."""
+    field = db.query(CustomFieldDefinition).filter(CustomFieldDefinition.id == field_id).first()
+    if not field:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Custom field definition not found",
+        )
+    if payload.name is not None:
+        field.name = payload.name
+    if payload.field_type is not None:
+        field.field_type = payload.field_type
+    if payload.options is not None:
+        field.options = payload.options
+    if payload.is_required is not None:
+        field.is_required = payload.is_required
+    if payload.display_order is not None:
+        field.display_order = payload.display_order
+    if payload.is_active is not None:
+        field.is_active = payload.is_active
+    db.commit()
+    db.refresh(field)
+    return field
+
+
+@router.delete(
+    "/custom-fields/{field_id}",
+    summary="Soft-delete (deactivate) a custom field definition",
+)
+def delete_custom_field(
+    field_id: int,
+    db: Session = Depends(get_db),
+    admin_user: UserORM = Depends(require_admin),
+):
+    """Soft-delete by setting is_active=False. Admin only."""
+    field = db.query(CustomFieldDefinition).filter(CustomFieldDefinition.id == field_id).first()
+    if not field:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Custom field definition not found",
+        )
+    field.is_active = False
+    db.commit()
+    return {"detail": "Field deactivated"}

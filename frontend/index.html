@@ -297,6 +297,9 @@
                   <p id="inspector-notes-text" class="notes-content">No notes recorded.</p>
                 </div>
 
+                <!-- Custom Fields in Inspector -->
+                <div id="inspector-custom-fields" class="inspector-custom-fields"></div>
+
                 <div class="inspector-actions" style="display: flex; gap: 12px;">
                   <button id="inspector-edit-btn" class="btn btn-primary" style="flex: 1;">
                     <i class="fa-solid fa-pen-to-square"></i> Edit Details
@@ -666,6 +669,75 @@
               </table>
             </div>
           </div>
+
+          <!-- Custom Fields Management -->
+          <div class="glass-card settings-panel" style="margin-top: 20px;">
+            <div class="settings-header">
+              <div class="header-info">
+                <h3>Custom Lead Fields</h3>
+                <p>Define extra data fields that appear on all lead forms</p>
+              </div>
+              <button id="add-custom-field-btn" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i>
+                <span>Add Field</span>
+              </button>
+            </div>
+
+            <!-- Add Custom Field inline form -->
+            <div id="custom-field-form-wrap" class="custom-field-form-wrap" style="display: none;">
+              <div class="form-grid">
+                <div class="form-group">
+                  <label for="cf-name">Field Name *</label>
+                  <input type="text" id="cf-name" class="form-control" placeholder="e.g. Preferred Course">
+                </div>
+                <div class="form-group">
+                  <label for="cf-type">Field Type *</label>
+                  <select id="cf-type" class="form-control">
+                    <option value="text">Text</option>
+                    <option value="number">Number</option>
+                    <option value="date">Date</option>
+                    <option value="select">Dropdown</option>
+                    <option value="checkbox">Checkbox</option>
+                  </select>
+                </div>
+                <div class="form-group" id="cf-options-group" style="display: none;">
+                  <label for="cf-options">Options (comma-separated) *</label>
+                  <input type="text" id="cf-options" class="form-control" placeholder="UG, PG, Diploma">
+                </div>
+                <div class="form-group" style="display: flex; align-items: flex-end; gap: 12px;">
+                  <label class="cf-checkbox-label">
+                    <input type="checkbox" id="cf-required"> Required field
+                  </label>
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 12px;">
+                <button id="cf-save-btn" class="btn btn-primary btn-sm">
+                  <i class="fa-solid fa-check"></i> Save Field
+                </button>
+                <button id="cf-cancel-btn" class="btn btn-secondary btn-sm">
+                  Cancel
+                </button>
+              </div>
+            </div>
+
+            <div class="table-responsive">
+              <table class="leads-table" id="custom-fields-table">
+                <thead>
+                  <tr>
+                    <th>Field Name</th>
+                    <th>Type</th>
+                    <th>Options</th>
+                    <th>Required</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="custom-fields-tbody">
+                  <!-- Rendered dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
         </section>
 
         <!-- ═══════ AI Copilot Tab ═══════ -->
@@ -838,6 +910,9 @@
           <textarea id="lead-notes" class="form-control" rows="3" placeholder="Additional details..."></textarea>
         </div>
 
+        <!-- Dynamic Custom Fields -->
+        <div id="custom-fields-add" class="custom-fields-dynamic"></div>
+
         <div class="modal-footer">
           <button type="button" id="cancel-modal-btn" class="btn btn-secondary">Cancel</button>
           <button type="submit" class="btn btn-primary">Save Lead</button>
@@ -895,6 +970,9 @@
           <label for="edit-lead-notes">Notes</label>
           <textarea id="edit-lead-notes" class="form-control" rows="3" placeholder="Additional details..."></textarea>
         </div>
+
+        <!-- Dynamic Custom Fields -->
+        <div id="custom-fields-edit" class="custom-fields-dynamic"></div>
 
         <div class="modal-footer">
           <button type="button" id="edit-cancel-modal-btn" class="btn btn-secondary">Cancel</button>

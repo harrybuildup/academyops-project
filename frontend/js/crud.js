@@ -38,6 +38,7 @@ const editLeadForm = document.getElementById('edit-lead-form');
 let currentPage = 1;
 const ITEMS_PER_PAGE = 10;
 let filteredList = [];
+let customFieldDefs = []; // cached active custom field definitions
 
 /**
  * Register CRUD event listeners
@@ -53,6 +54,7 @@ export function initCRUD() {
   // Modal open/close
   addLeadBtn.addEventListener('click', () => {
     addLeadForm.reset();
+    renderCustomFieldsInForm('custom-fields-add', null);
     addLeadModal.classList.remove('hidden');
   });
   
@@ -97,6 +99,7 @@ export function initCRUD() {
     document.getElementById('edit-lead-stage-select').value = lead.stage;
     document.getElementById('edit-lead-notes').value = lead.notes || '';
 
+    renderCustomFieldsInForm('custom-fields-edit', lead.custom_fields);
     editLeadModal.classList.remove('hidden');
   });
   const closeEditModal = () => editLeadModal.classList.add('hidden');
@@ -241,6 +244,9 @@ function updateInspector() {
   inspectorSource.textContent = lead.source || 'Unknown';
   inspectorStageSelect.value = lead.stage;
   inspectorNotesText.textContent = lead.notes || 'No notes recorded.';
+
+  // Render custom fields in inspector
+  renderCustomFieldsInInspector(lead.custom_fields);
 }
 
 /**
@@ -254,9 +260,10 @@ async function handleAddLeadSubmit(event) {
   const source = document.getElementById('lead-source-select').value;
   const stage = document.getElementById('lead-stage-select').value;
   const notes = document.getElementById('lead-notes').value.trim();
+  const custom_fields = gatherCustomFieldValues('custom-fields-add');
 
   try {
-    const newLead = await API.createLead({ name, phone, source, stage, notes });
+    const newLead = await API.createLead({ name, phone, source, stage, notes, custom_fields });
     
     // Close modal, reload state cache, notify and select the new record
     addLeadModal.classList.add('hidden');
@@ -286,9 +293,10 @@ async function handleEditLeadSubmit(event) {
   const source = document.getElementById('edit-lead-source-select').value;
   const stage = document.getElementById('edit-lead-stage-select').value;
   const notes = document.getElementById('edit-lead-notes').value.trim();
+  const custom_fields = gatherCustomFieldValues('custom-fields-edit');
 
   try {
-    const updated = await API.updateLead(state.selectedLeadId, { name, phone, source, stage, notes });
+    const updated = await API.updateLead(state.selectedLeadId, { name, phone, source, stage, notes, custom_fields });
     
     editLeadModal.classList.add('hidden');
     showToast(`Lead "${updated.name}" updated successfully!`, 'success');
@@ -362,4 +370,146 @@ function escapeHtml(str) {
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;')
     .replace(/'/g, '&#039;');
+}
+
+// ── Custom Field Helpers ─────────────────────────────────────────────────
+
+/**
+ * Load active custom field definitions from API
+ */
+export async function loadCustomFieldDefs() {
+  try {
+    customFieldDefs = await API.getActiveCustomFields();
+  } catch (e) {
+    console.warn('Could not load custom field definitions:', e);
+    customFieldDefs = [];
+  }
+}
+
+/**
+ * Render dynamic custom field inputs inside a container
+ * @param {string} containerId - DOM id of the container div
+ * @param {object|null} values - existing values to prefill (for edit modal)
+ */
+function renderCustomFieldsInForm(containerId, values) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  
+  if (!customFieldDefs || customFieldDefs.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const vals = values || {};
+  
+  container.innerHTML = `
+    <div class="custom-fields-section-label">
+      <i class="fa-solid fa-sliders"></i> Custom Fields
+    </div>
+    <div class="form-grid">
+      ${customFieldDefs.map(f => {
+        const key = f.field_key;
+        const val = vals[key] ?? '';
+        const req = f.is_required ? 'required' : '';
+        const reqMark = f.is_required ? ' *' : '';
+        const inputId = `${containerId}-${key}`;
+        
+        let input = '';
+        switch (f.field_type) {
+          case 'text':
+            input = `<input type="text" id="${inputId}" class="form-control" data-field-key="${key}" value="${escapeHtml(String(val))}" ${req}>`;
+            break;
+          case 'number':
+            input = `<input type="number" id="${inputId}" class="form-control" data-field-key="${key}" value="${val}" ${req}>`;
+            break;
+          case 'date':
+            input = `<input type="date" id="${inputId}" class="form-control" data-field-key="${key}" value="${val}" ${req}>`;
+            break;
+          case 'select':
+            const opts = (f.options || []).map(o => 
+              `<option value="${escapeHtml(o)}" ${val === o ? 'selected' : ''}>${escapeHtml(o)}</option>`
+            ).join('');
+            input = `<select id="${inputId}" class="form-control" data-field-key="${key}" ${req}>
+              <option value="">-- Select --</option>${opts}
+            </select>`;
+            break;
+          case 'checkbox':
+            input = `<label class="cf-checkbox-label">
+              <input type="checkbox" id="${inputId}" data-field-key="${key}" ${val ? 'checked' : ''}>
+              Yes
+            </label>`;
+            break;
+          default:
+            input = `<input type="text" id="${inputId}" class="form-control" data-field-key="${key}" value="${escapeHtml(String(val))}" ${req}>`;
+        }
+        
+        return `<div class="form-group">
+          <label for="${inputId}">${escapeHtml(f.name)}${reqMark}</label>
+          ${input}
+        </div>`;
+      }).join('')}
+    </div>`;
+}
+
+/**
+ * Gather custom field values from a form container
+ * @param {string} containerId - DOM id of the container div
+ * @returns {object} key-value pairs of custom field values
+ */
+function gatherCustomFieldValues(containerId) {
+  const container = document.getElementById(containerId);
+  if (!container) return {};
+  
+  const result = {};
+  customFieldDefs.forEach(f => {
+    const el = container.querySelector(`[data-field-key="${f.field_key}"]`);
+    if (!el) return;
+    
+    if (f.field_type === 'checkbox') {
+      result[f.field_key] = el.checked;
+    } else if (f.field_type === 'number') {
+      result[f.field_key] = el.value ? Number(el.value) : null;
+    } else {
+      result[f.field_key] = el.value || '';
+    }
+  });
+  return result;
+}
+
+/**
+ * Render custom field values in the inspector panel
+ * @param {object|null} values - custom field values from the lead
+ */
+function renderCustomFieldsInInspector(values) {
+  const container = document.getElementById('inspector-custom-fields');
+  if (!container) return;
+  
+  if (!customFieldDefs || customFieldDefs.length === 0 || !values || Object.keys(values).length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+
+  const rows = customFieldDefs
+    .filter(f => values[f.field_key] !== undefined && values[f.field_key] !== '' && values[f.field_key] !== null)
+    .map(f => {
+      let displayVal = values[f.field_key];
+      if (f.field_type === 'checkbox') displayVal = displayVal ? 'Yes' : 'No';
+      if (f.field_type === 'date' && displayVal) {
+        displayVal = new Date(displayVal).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+      }
+      return `<div class="detail-row">
+        <span class="detail-label"><i class="fa-solid fa-tag"></i> ${escapeHtml(f.name)}</span>
+        <span class="detail-value">${escapeHtml(String(displayVal))}</span>
+      </div>`;
+    }).join('');
+
+  if (rows) {
+    container.innerHTML = `
+      <div class="inspector-custom-section">
+        <h4><i class="fa-solid fa-sliders"></i> Custom Fields</h4>
+        <div class="inspector-details-grid">${rows}</div>
+      </div>`;
+  } else {
+    container.innerHTML = '';
+  }
 }

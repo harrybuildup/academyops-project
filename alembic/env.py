@@ -21,6 +21,7 @@ except ImportError:
 from src.database.connections import Base, _get_database_url
 import src.models.lead  # noqa: F401
 import src.models.user  # noqa: F401
+import src.models.custom_field  # noqa: F401
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

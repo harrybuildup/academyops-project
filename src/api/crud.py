@@ -9,6 +9,7 @@ from typing import Optional, Tuple
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
+from sqlalchemy.orm.attributes import flag_modified
 
 from src.models.errors import DuplicatePhoneError, LeadNotFoundError
 from src.models.lead import LeadORM, LeadStage
@@ -48,6 +49,7 @@ def create_lead(db: Session, payload: LeadCreate) -> LeadORM:
         source=payload.source,
         stage=LeadStage.NEW.value,
         notes=payload.notes or "",
+        custom_fields=payload.custom_fields or {},
     )
     try:
         db.add(lead)
@@ -87,6 +89,11 @@ def update_lead(db: Session, lead_id: int, payload: LeadUpdate) -> LeadORM:
         lead.stage = payload.stage.value
     if payload.notes is not None:
         lead.notes = payload.notes or ""
+    if payload.custom_fields is not None:
+        existing = lead.custom_fields or {}
+        existing.update(payload.custom_fields)
+        lead.custom_fields = existing
+        flag_modified(lead, 'custom_fields')
 
     try:
         db.commit()

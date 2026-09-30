@@ -218,5 +218,50 @@ export const API = {
     return request('/copilot/score', {
       method: 'POST'
     });
+  },
+
+  // ── Custom Fields ──────────────────────────────────────────────────────
+
+  /**
+   * Get all custom field definitions (admin)
+   */
+  async getCustomFields() {
+    return request('/custom-fields');
+  },
+
+  /**
+   * Get active custom field definitions (all users)
+   */
+  async getActiveCustomFields() {
+    return request('/custom-fields/active');
+  },
+
+  /**
+   * Create a new custom field definition (admin)
+   */
+  async createCustomField(fieldData) {
+    return request('/custom-fields', {
+      method: 'POST',
+      body: JSON.stringify(fieldData)
+    });
+  },
+
+  /**
+   * Update a custom field definition (admin)
+   */
+  async updateCustomField(fieldId, fieldData) {
+    return request(`/custom-fields/${fieldId}`, {
+      method: 'PATCH',
+      body: JSON.stringify(fieldData)
+    });
+  },
+
+  /**
+   * Delete (deactivate) a custom field definition (admin)
+   */
+  async deleteCustomField(fieldId) {
+    return request(`/custom-fields/${fieldId}`, {
+      method: 'DELETE'
+    });
   }
 };

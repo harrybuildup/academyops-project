@@ -18,6 +18,7 @@ class LeadCreate(BaseModel):
     phone: str = Field(..., min_length=7)
     source: str = Field(default="direct")
     notes: Optional[str] = Field(default="")
+    custom_fields: Optional[dict] = None
 
 
 class LeadStageUpdate(BaseModel):
@@ -33,6 +34,7 @@ class LeadResponse(BaseModel):
     source: Optional[str]
     stage: str
     notes: Optional[str]
+    custom_fields: Optional[dict] = None
     created_at: datetime
     updated_at: datetime
 
@@ -59,3 +61,4 @@ class LeadUpdate(BaseModel):
     source: Optional[str] = Field(default=None)
     stage: Optional[LeadStage] = Field(default=None)
     notes: Optional[str] = Field(default=None)
+    custom_fields: Optional[dict] = None
